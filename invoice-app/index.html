@@ -10,10 +10,12 @@
 
         <!-- Nav Bar -->
     <nav class="navbar">
-        <a href="index.html">Dashboard</a>
+         <a href="index.html">Dashboard</a>
         <a href="create.html">Create Invoice</a>
         <a href="history.html">Invoice History</a>
         <a href="payment-tracker.html">Payment Tracker</a>
+        <a href="customers.html">Customers</a>
+        <a href="#" onclick="logout()">Logout</a>
     </nav>
 
 
@@ -44,15 +46,11 @@
 
 <canvas id="revenueChart" height="100"></canvas>
 
-<br>
-
-<a class="btn" href="create.html">Create Invoice</a>
-<a class="btn" href="history.html">Invoice History</a>
-
 </div>
 
 <script src="js/database.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/dashboard.js"></script>
 
 </body>

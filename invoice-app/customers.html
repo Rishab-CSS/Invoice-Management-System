@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Management</title>
+
+<!-- Main Styles -->
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Customer Page Styles -->
+<link rel="stylesheet" href="css/customer.css">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+<nav class="navbar">
+    <a href="index.html">Dashboard</a>
+    <a href="create.html">Create Invoice</a>
+    <a href="history.html">Invoice History</a>
+    <a href="payment-tracker.html">Payment Tracker</a>
+    <a href="customers.html" class="active">Customers</a>
+    <a href="#" onclick="logout()">Logout</a>
+</nav>
+
+<div class="page-container">
+
+<h2>Customer Management</h2>
+
+
+
+
+<!-- Customer Form -->
+<div class="customer-form">
+    <input type="text" id="custName" placeholder="Customer Name">
+    <textarea id="custAddress" placeholder="Address"></textarea>
+    <input type="text" id="custGST" placeholder="GST Number">
+    <input type="text" id="custVendor" placeholder="Vendor Code">
+
+    <button id="customerBtn" onclick="addCustomer()">Add Customer</button>
+</div>
+
+
+<!-- Saved Customers Table -->
+<h3>Saved Customers</h3>
+
+<table id="customerTable">
+<thead>
+<tr>
+<th>Name</th>
+<th>GST</th>
+<th>Vendor Code</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+<!-- Customers will load here -->
+</tbody>
+</table>
+
+</div>
+
+
+<!-- Scripts -->
+<script src="js/customers.js"></script>
+
+</body>
+</html>

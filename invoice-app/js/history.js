@@ -1,3 +1,10 @@
+if(localStorage.getItem("adminLoggedIn") !== "true"){
+window.location.href = "login.html";
+}
+
+
+
+
 const table = document.querySelector("#invoiceTable tbody");
 const searchBox = document.getElementById("searchBox");
 

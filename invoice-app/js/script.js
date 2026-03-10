@@ -1,77 +1,29 @@
-// --- Config ---
-const CUSTOMERS = [
-    {
-        name: "H&P",
-        address: "BEML LIMITED\nHYDRAULIC AND POWERLINE DIVISION\nBEML NAGAR\nKGF-563115",
-        gst: "29AAACB8433D1ZU",
-        vendorCode: "703279"
-    },
-    {
-        name: "EM Divison",
-        address: "BEML LIMITED\nEM DIVISON\nBEML NAGAR\nKGF-563115",
-        gst: "29AAACB8433D1ZU",
-        vendorCode: "703279"
-    },
-    {
-        name: "KGF Marketing",
-        address: "BEML LIMITED\nKGF - MARKETING SPARES\nBEML NAGAR\nKGF-563115",
-        gst: "29AAACB8433D1ZU",
-        vendorCode: "703279"
-    },
-    {
-        name: "Mysore Marketing",
-        address: "BEML LIMITED\nMYSORE MARKETING SPARES\nBELVADI POST\nMYSORE-570018",
-        gst: "29AAACB8433D1ZU",
-        vendorCode: "703279"
-    },
-    {
-        name: "Mysore Engine Divison",
-        address: "BEML LIMITED\nMYSORE - ENGINE DIVISON\nBELVADI POST\nMYSORE-570018",
-        gst: "29AAACB8433D1ZU",
-        vendorCode: "703279"
-    },
-    {
-        name: "Mysore Truck Divison",
-        address: "BEML LIMITED\nMYSORE - TRUCK DIVISON\nBELVADI POST\nMYSORE-570018",
-        gst: "29AAACB8433D1ZU",
-        vendorCode: "703279"
-    },
-    {
-        name: "AMC",
-        address: "ARUN MACHINE COMPONENTS\nSB-119, 3RD CROSS, 1ST STAGE,\nPEENYA INDUSTRIAL AREA,\nBENGALURU-560058",
-        gst: "29AEDPB1219F1Z2",
-        vendorCode: ""
-    },
-    {
-        name: "INFRA BAZAAR TECH PVT LTD",
-        address: "INFRA BAZAAR TECH PVT LTD\nSURVEY NO. 27,DODDABALLAPURA-DEVANAHALLI ROAD,\nTHAMMASHETTIHALLI VILLAGE,\nKASABA HOBLI, DODDABALLAPUR,\nBANGALORE RURAL 561203.",
-        gst: "29AAFCI8431B1ZO",
-        vendorCode: "101721"
-    }
-];
+if(localStorage.getItem("adminLoggedIn") !== "true"){
+window.location.href = "login.html";
+}
+
+// Load customers from storage
+function getCustomers(){
+return JSON.parse(localStorage.getItem("customers")) || [];
+}
 
 // --- Init ---
 const itemsBody = document.getElementById('itemsBody');
 const customerSelect = document.getElementById('customerSelect');
 const gstTypeSelect = document.getElementById('gstType');
+
 let currentExcelBlob = null;
 let currentFileName = '';
 
 (function init() {
-    
-    //Auto Invoice Number
+
+    // Auto Invoice Number
     document.querySelector('[name="invoiceNo"]').value = getNextInvoiceNumber();
 
-    // Fill Customers
-    CUSTOMERS.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.name;
-        opt.textContent = c.name;
-        customerSelect.appendChild(opt);
+    // Load customers into dropdown
+    loadCustomerDropdown();
 
-    });
-
-    // Add 1st Item
+    // Add first item row
     addItem();
 
     // Listeners
@@ -79,6 +31,7 @@ let currentFileName = '';
     document.getElementById('generateBtn').addEventListener('click', generateInvoice);
     itemsBody.addEventListener('input', calc);
     gstTypeSelect.addEventListener('change', calc);
+
     document.getElementById('itemsBody').addEventListener('click', (e) => {
         if (e.target.classList.contains('btn-danger')) {
             e.target.closest('tr').remove();
@@ -86,68 +39,102 @@ let currentFileName = '';
         }
     });
 
+    // Check edit mode
     let editing = JSON.parse(localStorage.getItem("editInvoice"));
 
-if(editing){
+    if(editing){
 
-document.querySelector('[name="invoiceNo"]').value = editing.invoiceNo;
-document.querySelector('[name="date"]').value = editing.date;
+        document.getElementById("pageTitle").innerText = "Edit Invoice";
 
-customerSelect.value = editing.customer;
-loadCustomer();
+        document.querySelector('[name="invoiceNo"]').value = editing.invoiceNo;
+        document.querySelector('[name="date"]').value = editing.date;
 
-// Restore PO details
-document.querySelector('[name="poNo"]').value = editing.poNo || "";
-document.querySelector('[name="poDate"]').value = editing.poDate || "";
+        customerSelect.value = editing.customer;
+        loadCustomer();
 
-// -------- RESTORE ITEMS --------
-itemsBody.innerHTML = "";
+        document.querySelector('[name="poNo"]').value = editing.poNo || "";
+        document.querySelector('[name="poDate"]').value = editing.poDate || "";
 
-editing.items.forEach(item => {
+        itemsBody.innerHTML = "";
 
-addItem();
+        editing.items.forEach(item => {
 
-let row = itemsBody.lastElementChild;
+            addItem();
 
-row.querySelector('.inp-part').value = item.part;
-row.querySelector('.inp-no').value = item.no;
-row.querySelector('.inp-hsn').value = item.hsn;
-row.querySelector('.inp-qty').value = item.qty;
-row.querySelector('.inp-rate').value = item.rate;
-row.querySelector('.inp-total').value = item.total;
+            let row = itemsBody.lastElementChild;
+
+            row.querySelector('.inp-part').value = item.part;
+            row.querySelector('.inp-no').value = item.no;
+            row.querySelector('.inp-hsn').value = item.hsn;
+            row.querySelector('.inp-qty').value = item.qty;
+            row.querySelector('.inp-rate').value = item.rate;
+            row.querySelector('.inp-total').value = item.total;
+
+        });
+
+        renumberRows();
+        calc();
+
+        localStorage.removeItem("editInvoice");
+
+        let downloadMode = localStorage.getItem("downloadMode");
+
+        if(downloadMode === "true"){
+
+            localStorage.removeItem("downloadMode");
+
+            setTimeout(() => {
+                generateInvoice();
+            }, 500);
+
+        }
+    }
+
+})();
+
+
+// Load customer dropdown
+function loadCustomerDropdown(){
+
+let customers = getCustomers();
+
+customerSelect.innerHTML = '<option value="">Select Customer...</option>';
+
+customers.forEach(c => {
+
+const opt = document.createElement("option");
+
+opt.value = c.name;
+opt.textContent = c.name;
+
+customerSelect.appendChild(opt);
 
 });
 
-renumberRows();
-calc();
+}
 
 
+// Load selected customer details
+function loadCustomer(){
 
-// AUTO DOWNLOAD MODE
-let downloadMode = localStorage.getItem("downloadMode");
+let customers = getCustomers();
 
-if(downloadMode === "true"){
+const cName = customerSelect.value;
 
-localStorage.removeItem("downloadMode");
+const c = customers.find(x => x.name === cName);
 
-setTimeout(() => {
-generateInvoice();
-}, 500);
+if(c){
+
+document.getElementById("address").value = c.address;
+document.getElementById("gstin").value = c.gst;
+
+}else{
+
+document.getElementById("address").value = "";
+document.getElementById("gstin").value = "";
 
 }
-}
-})();
 
-async function loadCustomer() {
-    const cName = customerSelect.value;
-    const c = CUSTOMERS.find(x => x.name === cName);
-    if (c) {
-        document.getElementById('address').value = c.address;
-        document.getElementById('gstin').value = c.gst;
-    } else {
-        document.getElementById('address').value = "";
-        document.getElementById('gstin').value = "";
-    }
 }
 
 function addItem() {
@@ -274,7 +261,7 @@ localStorage.setItem("invoices", JSON.stringify(invoices));
         return;
     }
 
-    const selectedCustomer = CUSTOMERS.find(c => c.name === custName);
+    const selectedCustomer = getCustomers().find(c => c.name === custName);
 
     const overlay = document.getElementById('loadingOverlay');
     overlay.style.display = 'flex';

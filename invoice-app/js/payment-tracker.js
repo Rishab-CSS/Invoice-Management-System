@@ -1,3 +1,9 @@
+if(localStorage.getItem("adminLoggedIn") !== "true"){
+window.location.href = "login.html";
+}
+
+
+
 let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
 
 const tbody = document.getElementById("paymentBody");

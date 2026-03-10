@@ -1,0 +1,91 @@
+h2{
+    margin-bottom:20px;
+    font-size:24px;
+}
+
+.customer-form{
+    background:#f5f5f5;
+    padding:20px;
+    border-radius:8px;
+    margin-bottom:25px;
+    display:grid;
+    gap:10px;
+    max-width:500px;
+}
+
+.customer-form input,
+.customer-form textarea{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:14px;
+}
+
+.customer-form textarea{
+    resize:vertical;
+}
+
+.customer-form button{
+    padding:10px;
+    background:#2c7be5;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.customer-form button:hover{
+    background:#1a5dc9;
+}
+
+#customerTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+#customerTable th,
+#customerTable td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+}
+
+#customerTable th{
+    background:#2c7be5;
+    color:white;
+}
+
+#customerTable tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+#customerTable button{
+    padding:6px 10px;
+    margin-right:5px;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+#customerTable button:first-child{
+    background:#ffc107;
+    color:black;
+}
+
+#customerTable button:last-child{
+    background:#dc3545;
+    color:white;
+}
+
+#customerTable button:hover{
+    opacity:0.9;
+}
+
+.page-container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}

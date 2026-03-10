@@ -13,10 +13,12 @@
 
        <!-- Nav Bar -->
     <nav class="navbar">
-        <a href="index.html">Dashboard</a>
+         <a href="index.html">Dashboard</a>
         <a href="create.html">Create Invoice</a>
         <a href="history.html">Invoice History</a>
         <a href="payment-tracker.html">Payment Tracker</a>
+        <a href="customers.html">Customers</a>
+        <a href="#" onclick="logout()">Logout</a>
     </nav>
 
 
@@ -29,7 +31,7 @@
 
 
     <div class="container">
-        <h1>Invoice Generator</h1>
+        <h1 id="pageTitle">Invoice Generator</h1>
 
         <form id="invoiceForm">
             <!-- Header -->
@@ -126,6 +128,7 @@
     <script src="template/template.js"></script>
     <script src="js/database.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
 </body>
 
 </html>

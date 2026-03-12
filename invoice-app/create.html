@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -66,16 +67,54 @@
                 <textarea id="address" readonly style="background: #f1f5f9;"></textarea>
             </div>
 
-            <div class="grid">
-                <div class="form-group">
-                    <label>PO No</label>
-                    <input type="text" name="poNo">
-                </div>
-                <div class="form-group">
-                    <label>PO Date</label>
-                    <input type="date" name="poDate">
-                </div>
-            </div>
+<div class="grid">
+
+<div class="form-group">
+<label>Select PO</label>
+
+<select id="poSelect">
+<option value="">Select Purchase Order...</option>
+</select>
+
+</div>
+
+<div class="form-group">
+<label>PO Date</label>
+<input type="date" name="poDate" readonly>
+</div>
+
+</div>
+
+
+<!-- PO ITEM PANEL -->
+<div id="poItemPanel" style="display:none; margin-top:20px;">
+
+<h3>Select Items from PO</h3>
+
+<table id="poItemTable" style="width:100%; text-align:center;">
+<thead>
+<tr>
+<th>Select</th>
+<th>Part</th>
+<th>Part No</th>
+<th>HSN</th>
+<th>Ordered Qty</th>
+<th>Pending Qty</th>
+<th>Rate</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+</table>
+
+<br>
+
+<button type="button" class="btn btn-green" onclick="addSelectedPOItems()">
+Add Selected Items
+</button>
+
+</div>
+
 
             <!-- Items -->
             <div class="table-container">
@@ -126,10 +165,18 @@
         </form>
     </div>
     
-    <script src="template/template.js"></script>
-    <script src="js/database.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/auth.js"></script>
+<script src="template/template.js"></script>
+<script src="js/database.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="js/script.js"></script>
+<script src="js/auth.js"></script>
+
 </body>
 
 </html>

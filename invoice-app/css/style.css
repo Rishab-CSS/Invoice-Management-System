@@ -267,3 +267,10 @@ align-items:center;
 .po-actions button{
 width:70px;
 }
+
+
+#poItemTable th,
+#poItemTable td {
+    text-align: center;
+    vertical-align: middle;
+}

@@ -4,7 +4,7 @@ window.location.href = "login.html";
 
 
 
-let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+let invoices = getInvoices();
 
 const tbody = document.getElementById("paymentBody");
 
@@ -14,9 +14,13 @@ let totalOverdue = 0;
 
 function calculateDueDate(invoiceDate){
 
+if(!invoiceDate) return "";
+
 let date = new Date(invoiceDate);
 
-date.setDate(date.getDate() + 45); // default 45 days
+if(isNaN(date)) return "";
+
+date.setDate(date.getDate() + 45);
 
 return date.toISOString().split("T")[0];
 
@@ -126,14 +130,17 @@ location.reload();
 
 function formatDate(dateString){
 
+if(!dateString) return "-";
+
 let d = new Date(dateString);
+
+if(isNaN(d)) return "-";
 
 let day = String(d.getDate()).padStart(2,'0');
 let month = String(d.getMonth()+1).padStart(2,'0');
 let year = d.getFullYear();
 
 return `${day}-${month}-${year}`;
-
 }
 
 loadPayments();

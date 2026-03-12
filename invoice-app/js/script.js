@@ -23,6 +23,15 @@ let currentFileName = '';
     // Load customers into dropdown
     loadCustomerDropdown();
 
+    // Load PO List
+    loadPOList();
+
+    // Activate Select 2 for searchable dropdown
+$('#poSelect').select2({
+placeholder: "Search or Select Purchase Order",
+width: '100%'
+});
+
     // Add first item row
     addItem();
 
@@ -39,10 +48,14 @@ let currentFileName = '';
         }
     });
 
+    $('#poSelect').on('change', loadPOItems);
+
     // Check edit mode
     let editing = JSON.parse(localStorage.getItem("editInvoice"));
 
     if(editing){
+
+        localStorage.setItem("editInvoiceBackup","true");
 
         document.getElementById("pageTitle").innerText = "Edit Invoice";
 
@@ -52,8 +65,8 @@ let currentFileName = '';
         customerSelect.value = editing.customer;
         loadCustomer();
 
-        document.querySelector('[name="poNo"]').value = editing.poNo || "";
-        document.querySelector('[name="poDate"]').value = editing.poDate || "";
+        $('#poSelect').val(editing.poNo).trigger('change');
+document.querySelector('[name="poDate"]').value = editing.poDate || "";
 
         itemsBody.innerHTML = "";
 
@@ -110,6 +123,119 @@ opt.textContent = c.name;
 customerSelect.appendChild(opt);
 
 });
+
+}
+
+// Load PO List
+function loadPOList(){
+
+let pos = JSON.parse(localStorage.getItem("purchaseOrders")) || [];
+
+const select = document.getElementById("poSelect");
+
+pos.forEach(po => {
+
+let option = document.createElement("option");
+
+option.value = po.poNo;
+option.textContent = po.poNo + " - " + po.customer;
+
+select.appendChild(option);
+
+});
+
+}
+
+
+
+// Load PO Items
+function loadPOItems(){
+
+let poNo = $('#poSelect').val();
+
+let pos = JSON.parse(localStorage.getItem("purchaseOrders")) || [];
+
+let po = pos.find(p => p.poNo === poNo);
+
+if(!po){
+document.getElementById("poItemPanel").style.display="none";
+return;
+}
+
+// fill PO fields
+document.querySelector('[name="poDate"]').value = po.poDate;
+
+// set customer automatically
+document.getElementById("customerSelect").value = po.customer;
+loadCustomer();
+
+// show item panel
+document.getElementById("poItemPanel").style.display="block";
+
+let tbody = document.querySelector("#poItemTable tbody");
+
+tbody.innerHTML = "";
+
+// load items
+po.items.forEach(item => {
+
+if(item.pendingQty <= 0) return;
+
+let row = document.createElement("tr");
+
+row.innerHTML = `
+<td><input type="checkbox" class="po-check"></td>
+<td>${item.part}</td>
+<td>${item.partNo}</td>
+<td>${item.hsn}</td>
+<td>${item.orderedQty}</td>
+<td>${item.pendingQty}</td>
+<td>${item.rate}</td>
+`;
+
+tbody.appendChild(row);
+
+});
+
+}
+
+// Add Selected Items Of PO
+function addSelectedPOItems(){
+
+// CLEAR EXISTING ROWS
+itemsBody.innerHTML = "";
+
+let rows = document.querySelectorAll("#poItemTable tbody tr");
+
+rows.forEach(row=>{
+
+let checked = row.querySelector(".po-check").checked;
+
+if(!checked) return;
+
+addItem();
+
+let invoiceRow = itemsBody.lastElementChild;
+
+invoiceRow.querySelector(".inp-part").value =
+row.children[1].innerText;
+
+invoiceRow.querySelector(".inp-no").value =
+row.children[2].innerText;
+
+invoiceRow.querySelector(".inp-hsn").value =
+row.children[3].innerText;
+
+invoiceRow.querySelector(".inp-qty").value =
+row.children[5].innerText;
+
+invoiceRow.querySelector(".inp-rate").value =
+row.children[6].innerText;
+
+});
+
+renumberRows();
+calc();
 
 }
 
@@ -230,15 +356,46 @@ total: row.querySelector('.inp-total').value
 
 });
 
+
 const invoiceData = {
 invoiceNo: invNo,
 customer: custName,
 date: document.querySelector('[name="date"]').value,
-poNo: document.querySelector('[name="poNo"]').value,
+poNo: $('#poSelect').val(),
 poDate: document.querySelector('[name="poDate"]').value,
 items: items,
-total: document.getElementById("grandTotal").textContent
+total: Number(document.getElementById("grandTotal").textContent)    ,  
+status: "Pending"
 };
+
+
+
+let isEditing = JSON.parse(localStorage.getItem("editInvoiceBackup"));
+
+
+// UPDATE PO PENDING QTY
+let poNo = $('#poSelect').val();
+
+let pos = JSON.parse(localStorage.getItem("purchaseOrders")) || [];
+
+let po = pos.find(p => p.poNo === poNo);
+
+if(po && !isEditing){
+
+items.forEach(invItem => {
+
+let poItem = po.items.find(i => i.partNo === invItem.no);
+
+if(poItem){
+poItem.pendingQty -= Number(invItem.qty);
+}
+
+});
+
+localStorage.setItem("purchaseOrders", JSON.stringify(pos));
+
+}
+
 
 // CHECK IF EDIT MODE
 let invoices = getInvoices();
@@ -246,20 +403,18 @@ let invoices = getInvoices();
 let index = invoices.findIndex(i => i.invoiceNo === invNo);
 
 if(index !== -1){
-    // UPDATE EXISTING
-    invoices[index] = invoiceData;
-}else{
-    // CREATE NEW
-    invoices.push(invoiceData);
+invoices[index] = invoiceData;
+localStorage.setItem("invoices", JSON.stringify(invoices));
+}
+else{
+saveInvoice(invoiceData);
 }
 
-localStorage.setItem("invoices", JSON.stringify(invoices));
 
-
-    if (!invNo || !custName) {
-        alert("Please fill Invoice Number and Select Customer.");
-        return;
-    }
+   if (!invNo || !custName || !document.querySelector('[name="date"]').value) {
+alert("Please fill Invoice Number, Date and Customer.");
+return;
+}
 
     const selectedCustomer = getCustomers().find(c => c.name === custName);
 
@@ -326,7 +481,7 @@ localStorage.setItem("invoices", JSON.stringify(invoices));
             val('I15', " " + selectedCustomer.vendorCode, true);
         }
 
-        val('I11', document.querySelector('[name="poNo"]').value, true);
+        val('I11', $('#poSelect').val(), true);
         val('I12', formatDate(document.querySelector('[name="poDate"]').value), true);
 
         // Items (Row 19)
@@ -405,6 +560,7 @@ localStorage.setItem("invoices", JSON.stringify(invoices));
         overlay.style.display = 'none';
     }
 
+    localStorage.removeItem("editInvoiceBackup");
     localStorage.removeItem("editInvoice");
 }
 
@@ -442,3 +598,6 @@ function numberToWords(n) {
 
     return str.toUpperCase(); // Ensure Uppercase
 }
+
+
+

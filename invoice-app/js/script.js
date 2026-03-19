@@ -2,10 +2,17 @@ if(localStorage.getItem("adminLoggedIn") !== "true"){
 window.location.href = "login.html";
 }
 
-// Load customers from storage
-function getCustomers(){
-return JSON.parse(localStorage.getItem("customers")) || [];
+
+
+const API_URL = "http://localhost:3000/api/customers";
+
+async function getCustomers(){
+    let res = await fetch(API_URL);
+    return await res.json();
 }
+
+
+
 
 // --- Init ---
 const itemsBody = document.getElementById('itemsBody');
@@ -18,7 +25,27 @@ let currentFileName = '';
 (function init() {
 
     // Auto Invoice Number
-    document.querySelector('[name="invoiceNo"]').value = getNextInvoiceNumber();
+// Show temporary number instantly
+document.querySelector('[name="invoiceNo"]').value = "...";
+
+// Fetch real latest number
+fetch("http://localhost:3000/api/invoices/latest")
+  .then(res => res.json())
+  .then(data => {
+
+    let nextNo = 1;
+
+    if(data && data.invoiceNo){
+      nextNo = parseInt(data.invoiceNo) + 1;
+    }
+
+    document.querySelector('[name="invoiceNo"]').value =
+      String(nextNo).padStart(3, '0');
+
+  })
+  .catch(err => console.error(err));
+
+
 
     // Load customers into dropdown
     loadCustomerDropdown();
@@ -107,17 +134,19 @@ document.querySelector('[name="poDate"]').value = editing.poDate || "";
 
 
 // Load customer dropdown
-function loadCustomerDropdown(){
+let customersList = [];
 
-let customers = getCustomers();
+async function loadCustomerDropdown(){
+
+customersList = await getCustomers();
 
 customerSelect.innerHTML = '<option value="">Select Customer...</option>';
 
-customers.forEach(c => {
+customersList.forEach(c => {
 
 const opt = document.createElement("option");
 
-opt.value = c.name;
+opt.value = c._id;   // 🔥 IMPORTANT CHANGE
 opt.textContent = c.name;
 
 customerSelect.appendChild(opt);
@@ -125,6 +154,8 @@ customerSelect.appendChild(opt);
 });
 
 }
+
+
 
 // Load PO List
 function loadPOList(){
@@ -166,7 +197,13 @@ return;
 document.querySelector('[name="poDate"]').value = po.poDate;
 
 // set customer automatically
-document.getElementById("customerSelect").value = po.customer;
+let cust = customersList.find(c => c.name === po.customer);
+
+if(cust){
+    document.getElementById("customerSelect").value = cust._id;
+    loadCustomer();
+}
+
 loadCustomer();
 
 // show item panel
@@ -243,11 +280,9 @@ calc();
 // Load selected customer details
 function loadCustomer(){
 
-let customers = getCustomers();
+const id = customerSelect.value;
 
-const cName = customerSelect.value;
-
-const c = customers.find(x => x.name === cName);
+const c = customersList.find(x => x._id === id);
 
 if(c){
 
@@ -262,6 +297,8 @@ document.getElementById("gstin").value = "";
 }
 
 }
+
+
 
 function addItem() {
     const row = document.createElement('tr');
@@ -333,6 +370,7 @@ function calc() {
 
 // --- EXCEL GENERATION ---
 async function generateInvoice() {
+
     if (typeof ENCODED_TEMPLATE === 'undefined') {
         alert("Error: Template not loaded properly.");
         return;
@@ -340,217 +378,226 @@ async function generateInvoice() {
 
     const invNo = document.querySelector('[name="invoiceNo"]').value;
     const custName = customerSelect.value;
-    // Collect items
-let items = [];
+    const selectedCustomer = customersList.find(c => c._id === custName);
+const custNameText = selectedCustomer ? selectedCustomer.name : "";
+
+    const dateVal = document.querySelector('[name="date"]').value;
+
+    // ✅ VALIDATION FIRST
+    if (!invNo || !custName || !dateVal) {
+        alert("Please fill Invoice Number, Date and Customer.");
+        return;
+    }
+
+    // 🔥 Collect items
+    let items = [];
 
 Array.from(itemsBody.children).forEach(row => {
 
-items.push({
-part: row.querySelector('.inp-part').value,
-no: row.querySelector('.inp-no').value,
-hsn: row.querySelector('.inp-hsn').value,
-qty: row.querySelector('.inp-qty').value,
-rate: row.querySelector('.inp-rate').value,
-total: row.querySelector('.inp-total').value
-});
+  const part = row.querySelector('.inp-part').value.trim();
+  const qty = row.querySelector('.inp-qty').value;
+
+  // 🔥 SKIP EMPTY ROW
+  if (part === "" || qty === "" || Number(qty) === 0) return;
+
+  items.push({
+    part: part,
+    no: row.querySelector('.inp-no').value,
+    hsn: row.querySelector('.inp-hsn').value,
+    qty: Number(qty),
+    rate: Number(row.querySelector('.inp-rate').value),
+    total: Number(row.querySelector('.inp-total').value)
+  });
 
 });
 
 
-const invoiceData = {
-invoiceNo: invNo,
-customer: custName,
-date: document.querySelector('[name="date"]').value,
-poNo: $('#poSelect').val(),
-poDate: document.querySelector('[name="poDate"]').value,
-items: items,
-total: Number(document.getElementById("grandTotal").textContent)    ,  
-status: "Pending"
-};
+    let isEditing = JSON.parse(localStorage.getItem("editInvoiceBackup"));
 
+    // 🔥 UPDATE PO PENDING QTY
+    let poNo = $('#poSelect').val();
+    let pos = JSON.parse(localStorage.getItem("purchaseOrders")) || [];
+    let po = pos.find(p => p.poNo === poNo);
 
+    if (po && !isEditing) {
+        items.forEach(invItem => {
+            let poItem = po.items.find(i => i.partNo === invItem.no);
+            if (poItem) {
+                poItem.pendingQty -= Number(invItem.qty);
+            }
+        });
+        localStorage.setItem("purchaseOrders", JSON.stringify(pos));
+    }
 
-let isEditing = JSON.parse(localStorage.getItem("editInvoiceBackup"));
+    // 🔥 CHECK EDIT MODE
+    let editId = localStorage.getItem("editInvoiceId");
 
+    let url = "http://localhost:3000/api/invoices";
+    let method = "POST";
 
-// UPDATE PO PENDING QTY
-let poNo = $('#poSelect').val();
+    if (editId) {
+        url = `http://localhost:3000/api/invoices/${editId}`;
+        method = "PUT";
+    }
 
-let pos = JSON.parse(localStorage.getItem("purchaseOrders")) || [];
+    try {
+        console.log("ITEMS FINAL:", items);
+        await fetch(url, {
+  method: method,
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    invoiceNo: invNo,
+    customerName: custNameText,
+    amount: Number(document.getElementById("grandTotal").textContent),
+    invoiceDate: dateVal,
 
-let po = pos.find(p => p.poNo === poNo);
+    // 🔥 ADD THESE
+    poNo: $('#poSelect').val(),
+    poDate: document.querySelector('[name="poDate"]').value,
+    gstType: gstTypeSelect.value,
 
-if(po && !isEditing){
-
-items.forEach(invItem => {
-
-let poItem = po.items.find(i => i.partNo === invItem.no);
-
-if(poItem){
-poItem.pendingQty -= Number(invItem.qty);
-}
-
+    items: items   // 🔥 MOST IMPORTANT
+  })
 });
 
-localStorage.setItem("purchaseOrders", JSON.stringify(pos));
+        console.log("Invoice saved/updated in DB");
 
-}
+        localStorage.removeItem("editInvoiceId");
 
+    } catch (err) {
+        console.error("Error saving invoice:", err);
+    }
 
-// CHECK IF EDIT MODE
-let invoices = getInvoices();
-
-let index = invoices.findIndex(i => i.invoiceNo === invNo);
-
-if(index !== -1){
-invoices[index] = invoiceData;
-localStorage.setItem("invoices", JSON.stringify(invoices));
-}
-else{
-saveInvoice(invoiceData);
-}
-
-
-   if (!invNo || !custName || !document.querySelector('[name="date"]').value) {
-alert("Please fill Invoice Number, Date and Customer.");
-return;
-}
-
-    const selectedCustomer = getCustomers().find(c => c.name === custName);
 
     const overlay = document.getElementById('loadingOverlay');
     overlay.style.display = 'flex';
 
     try {
-        // 1. Decode Base64 to ArrayBuffer
+        // Decode template
         const binaryString = window.atob(ENCODED_TEMPLATE.replace(/\s/g, ''));
         const len = binaryString.length;
         const bytes = new Uint8Array(len);
+
         for (let i = 0; i < len; i++) {
             bytes[i] = binaryString.charCodeAt(i);
         }
 
-        // 2. Load Workbook
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(bytes.buffer);
+
         const sheet = workbook.worksheets[0];
 
-        // 3. Map Data
         const val = (cellAddress, v, append = false, bufferChar = ' ') => {
             const c = sheet.getCell(cellAddress);
-            // Force Uppercase for all string inputs
-            let finalVal = v;
-            if (typeof v === 'string') {
-                finalVal = v.toUpperCase();
-            }
+
+            let finalVal = (typeof v === 'string') ? v.toUpperCase() : v;
 
             if (append && c.value) {
-                let existing = '';
-                if (typeof c.value === 'object' && c.value.richText) {
-                    existing = c.value.richText.map(r => r.text).join('');
-                } else {
-                    existing = c.value.toString();
-                }
+                let existing = (typeof c.value === 'object' && c.value.richText)
+                    ? c.value.richText.map(r => r.text).join('')
+                    : c.value.toString();
+
                 c.value = existing + bufferChar + finalVal;
             } else {
                 c.value = finalVal;
             }
         };
 
-        // Headers - Append to preserve labels
         val('B9', invNo, true);
 
         const formatDate = (dStr) => {
-            if (!dStr) return "";
-            const [y, m, d] = dStr.split('-');
-            return `${d}-${m}-${y}`;
-        };
+  if(!dStr) return "";   // 🔥 FIX
+  const [y, m, d] = dStr.split('-');
+  return `${d}-${m}-${y}`;
+};
 
-        val('E9', formatDate(document.querySelector('[name="date"]').value), true);
+        val('E9', formatDate(dateVal), true);
 
-        // Address: Name \n Address
-        const fullAddress = document.getElementById('address').value;
-        const addrCell = sheet.getCell('B11');
-        val('B11', fullAddress, true, '\n');
-        addrCell.alignment = { wrapText: true, vertical: 'top', horizontal: 'left' };
-
+        val('B11', document.getElementById('address').value, true, '\n');
         val('B15', document.getElementById('gstin').value, true);
 
-        // Vendor Code Logic (I15)
-        if (selectedCustomer && selectedCustomer.vendorCode) {
-            val('I15', " " + selectedCustomer.vendorCode, true);
-        }
+        // 🔥 ADD VENDOR CODE
+if(selectedCustomer && selectedCustomer.vendorCode){
+  val('I15', selectedCustomer.vendorCode, true);
+}
 
         val('I11', $('#poSelect').val(), true);
-        val('I12', formatDate(document.querySelector('[name="poDate"]').value), true);
 
-        // Items (Row 19)
+        let poDateVal = document.querySelector('[name="poDate"]').value;
+
+if(poDateVal){
+  val('I12', formatDate(poDateVal), true);
+}
+
         let r = 19;
+
         Array.from(itemsBody.children).forEach(row => {
-            // FIX: Skip hidden rows 29-30 (Template Issue)
-            // If we land on Row 28, jump to 31 to avoid the hidden section
-            if (r === 28) {
-                r = 31;
-            }
+
+            if (r === 28) r = 31;
 
             const sl = parseInt(row.querySelector('.sl-no').textContent);
             const name = row.querySelector('.inp-part').value;
             const no = row.querySelector('.inp-no').value;
             const hsn = row.querySelector('.inp-hsn').value;
-            let qty = row.querySelector('.inp-qty').value; // Keep as string to append " nos"
+            const qty = row.querySelector('.inp-qty').value;
             const rate = parseFloat(row.querySelector('.inp-rate').value);
             const tot = parseFloat(row.querySelector('.inp-total').value);
 
             val(`B${r}`, sl);
             val(`C${r}`, no);
             val(`I${r}`, hsn);
-
-            // Append " nos" if qty exists
-            if (qty) {
-                val(`J${r}`, qty + " nos");
-            } else {
-                val(`J${r}`, "");
-            }
-
+            val(`J${r}`, qty + " nos");
             val(`K${r}`, rate);
             val(`L${r}`, tot);
-            val(`C${r + 1}`, name); // Name on next row
+            val(`C${r + 1}`, name);
 
-            r += 3; // Gap of 1 line between items (Row N, N+1(Name), N+2(Gap))
+            r += 3;
         });
 
-        // Footer
-        const sub = parseFloat(document.getElementById('subTotal').textContent);
-        const grand = parseFloat(document.getElementById('grandTotal').textContent);
-        const taxTotalElem = document.getElementById('taxTotal');
-        const tax = parseFloat(taxTotalElem.textContent);
-        const cgst = parseFloat(taxTotalElem.dataset.cgst || 0);
-        const sgst = parseFloat(taxTotalElem.dataset.sgst || 0);
-        const gType = parseInt(gstTypeSelect.value);
 
-        val('L40', sub);
-        if (gType === 18) {
-            val('L43', tax); // IGST
-            val('L41', 0); val('L42', 0);
-        } else {
-            val('L41', cgst); // CGST
-            val('L42', sgst); // SGST
-            val('L43', 0);
-        }
-        val('L44', tax);
-        val('L45', parseFloat(document.getElementById('rounding').textContent));
-        val('L46', grand);
-        val('D45', document.getElementById('amountWords').textContent);
 
-        // 4. Create Blob and Auto-Download
+
+        const sub = Number(document.getElementById('subTotal').textContent);
+const tax = Number(document.getElementById('taxTotal').textContent);
+const round = Number(document.getElementById('rounding').textContent);
+const grand = Number(document.getElementById('grandTotal').textContent);
+
+const cgst = Number(document.getElementById('taxTotal').dataset.cgst || 0);
+const sgst = Number(document.getElementById('taxTotal').dataset.sgst || 0);
+
+const gstType = Number(gstTypeSelect.value);
+
+let igst = 0;
+
+if(gstType === 18){
+  igst = tax;
+}
+
+// 🔥 Fill Excel
+val('L40', sub);
+val('L41', cgst);
+val('L42', sgst);
+val('L43', igst);
+val('L44', tax);
+val('L45', round);
+val('L46', grand);
+
+// Amount in words
+val('D45', document.getElementById('amountWords').textContent);
+
+
+
+
         const buffer = await workbook.xlsx.writeBuffer();
-        currentExcelBlob = new Blob([buffer], {
-            type:
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        });
-        currentFileName = `${invNo}_${custName.replace(/\s+/g, '_')}.xlsx`;
 
-        // Auto Trigger Download
+        currentExcelBlob = new Blob([buffer], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        });
+
+        currentFileName = `${invNo}_${custNameText.replace(/\s+/g, '_')}.xlsx`;
+
         downloadExcel();
 
     } catch (err) {
@@ -561,7 +608,8 @@ return;
     }
 
     localStorage.removeItem("editInvoiceBackup");
-    localStorage.removeItem("editInvoice");
+
+
 }
 
 function downloadExcel() {
@@ -598,6 +646,4 @@ function numberToWords(n) {
 
     return str.toUpperCase(); // Ensure Uppercase
 }
-
-
 

@@ -24,11 +24,32 @@ function generateRCNo(){
 
 let routeCards = JSON.parse(localStorage.getItem("routeCards")) || [];
 
-let next = routeCards.length + 1;
+if(routeCards.length === 0){
+return "RPIC/RC/01";
+}
+
+/* extract numbers */
+
+let numbers = routeCards.map(rc => {
+
+let parts = rc.rcNo.split("/"); // ["RPIC","RC","01"]
+
+return parseInt(parts[2]) || 0;
+
+});
+
+/* find max */
+
+let max = Math.max(...numbers);
+
+/* next number */
+
+let next = max + 1;
 
 return "RPIC/RC/" + String(next).padStart(2,"0");
 
 }
+
 
 document.getElementById("rcNo").value = generateRCNo();
 
@@ -61,24 +82,23 @@ loadCustomers();
 
 
 // =======================
-// LOAD PRODUCTS (SEARCHABLE)
+// LOAD PRODUCTS
 // =======================
 
 function loadProducts(){
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
-let select = document.getElementById("rcProduct");
+let datalist = document.getElementById("productList");
 
-select.innerHTML = "<option value=''>Select Product...</option>";
+datalist.innerHTML = "";
 
 products.forEach(p => {
 
 let opt = document.createElement("option");
 opt.value = p.productName;
-opt.textContent = p.productName;
 
-select.appendChild(opt);
+datalist.appendChild(opt);
 
 });
 
@@ -88,18 +108,74 @@ loadProducts();
 
 
 // =======================
-// LOAD PROCESSES WHEN PRODUCT SELECTED
+// MACHINE DROPDOWN BUILDER
 // =======================
 
-document.getElementById("rcProduct").addEventListener("change", function(){
+function setupMachineDropdown(row){
+
+let machineSelect = row.querySelector(".machine");
+let otherInput = row.querySelector(".machine-other");
+
+/* Default */
+
+let defaultOpt = document.createElement("option");
+defaultOpt.value = "";
+defaultOpt.textContent = "Select Machine/Vendor Name";
+defaultOpt.disabled = true;
+defaultOpt.selected = true;
+
+machineSelect.appendChild(defaultOpt);
+
+/* Machine list */
+
+machines.forEach(m => {
+
+let opt = document.createElement("option");
+opt.value = m;
+opt.textContent = m;
+
+machineSelect.appendChild(opt);
+
+});
+
+/* Others option */
+
+let otherOpt = document.createElement("option");
+otherOpt.value = "OTHER";
+otherOpt.textContent = "Others";
+
+machineSelect.appendChild(otherOpt);
+
+/* Change event */
+
+machineSelect.addEventListener("change", function(){
+
+if(this.value === "OTHER"){
+otherInput.style.display = "block";
+}else{
+otherInput.style.display = "none";
+}
+
+});
+
+}
+
+
+// =======================
+// LOAD PROCESSES
+// =======================
+
+document.getElementById("rcProduct").addEventListener("input", function(){
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
 let product = products.find(p => p.productName === this.value);
 
-processRows.innerHTML = "";
+/* ONLY clear & reload if product is found */
 
-if(!product) return;
+if(product){
+
+processRows.innerHTML = "";
 
 product.processes.forEach((proc,i)=>{
 
@@ -113,6 +189,9 @@ row.innerHTML = `
 
 <td>
 <select class="machine"></select>
+<input type="text" class="machine-other"
+placeholder="Enter Machine/Vendor"
+style="display:none;margin-top:4px;">
 </td>
 
 <td><input type="date" class="start"></td>
@@ -137,34 +216,14 @@ row.innerHTML = `
 
 processRows.appendChild(row);
 
-let machineSelect = row.querySelector(".machine");
-
-/* Default option */
-
-let defaultOpt = document.createElement("option");
-defaultOpt.value = "";
-defaultOpt.textContent = "Select Machine/Vendor Name";
-defaultOpt.disabled = true;
-defaultOpt.selected = true;
-
-machineSelect.appendChild(defaultOpt);
-
-
-/* Machine list */
-
-machines.forEach(m => {
-
-let opt = document.createElement("option");
-opt.value = m;
-opt.textContent = m;
-
-machineSelect.appendChild(opt);
+setupMachineDropdown(row);
 
 });
 
-});
+}
 
 });
+
 
 // =======================
 // SAVE ROUTE CARD
@@ -178,18 +237,25 @@ let processes = [];
 
 rows.forEach(row=>{
 
+let machineSelect = row.querySelector(".machine").value;
+let otherMachine = row.querySelector(".machine-other")?.value;
+
 processes.push({
 
 process: row.querySelector(".process-name")
 ? row.querySelector(".process-name").value
 : row.children[1].innerText,
-machine: row.querySelector(".machine").value,
+
+machine: machineSelect === "OTHER" ? otherMachine : machineSelect,
+
 startDate: formatDate(row.querySelector(".start").value),
 endDate: formatDate(row.querySelector(".end").value),
+
 producedQty: Number(row.querySelector(".produced").value),
 acceptedQty: Number(row.querySelector(".accepted").value),
 reworkQty: Number(row.querySelector(".rework").value),
 rejectedQty: Number(row.querySelector(".reject").value),
+
 operator: row.querySelector(".operator").value
 
 });
@@ -230,24 +296,20 @@ location.reload();
 }
 
 
-
-/* =========================
-   EDIT MODE
-========================= */
+// =========================
+// EDIT MODE
+// =========================
 
 let editing = JSON.parse(localStorage.getItem("editRouteCard"));
 
 if(editing){
 
 document.getElementById("rcNo").value = editing.rcNo;
-document.getElementById("rcDate").value = editing.date;
 document.getElementById("rcCustomer").value = editing.customer;
 document.getElementById("rcProduct").value = editing.product;
 document.getElementById("rcPartNo").value = editing.partNumber || "";
 document.getElementById("rcQty").value = editing.qty;
 document.getElementById("rcPoNo").value = editing.poNo || "";
-
-/* load processes */
 
 processRows.innerHTML = "";
 
@@ -263,11 +325,14 @@ row.innerHTML = `
 
 <td>
 <select class="machine"></select>
+<input type="text" class="machine-other"
+placeholder="Enter Machine/Vendor"
+style="display:none;margin-top:4px;">
 </td>
 
-<td><input type="date" class="start" value="${proc.startDate}"></td>
+<td><input type="date" class="start"></td>
 
-<td><input type="date" class="end" value="${proc.endDate}"></td>
+<td><input type="date" class="end"></td>
 
 <td><input type="number" class="produced" value="${proc.producedQty}"></td>
 
@@ -287,21 +352,14 @@ row.innerHTML = `
 
 processRows.appendChild(row);
 
-/* machine dropdown */
+setupMachineDropdown(row);
 
-let machineSelect = row.querySelector(".machine");
+row.querySelector(".machine").value = machines.includes(proc.machine) ? proc.machine : "OTHER";
 
-machines.forEach(m => {
-
-let opt = document.createElement("option");
-opt.value = m;
-opt.textContent = m;
-
-machineSelect.appendChild(opt);
-
-});
-
-machineSelect.value = proc.machine;
+if(!machines.includes(proc.machine)){
+row.querySelector(".machine-other").style.display = "block";
+row.querySelector(".machine-other").value = proc.machine;
+}
 
 });
 
@@ -311,7 +369,7 @@ localStorage.removeItem("editRouteCard");
 
 
 // =======================
-// REMOVE PROCESS ROW
+// REMOVE PROCESS
 // =======================
 
 processRows.addEventListener("click", function(e){
@@ -329,7 +387,6 @@ renumberProcesses();
 });
 
 
-
 function renumberProcesses(){
 
 Array.from(processRows.children).forEach((row,i)=>{
@@ -340,6 +397,10 @@ row.querySelector(".sl-no").textContent = i+1;
 
 }
 
+
+// =======================
+// DATE FORMAT
+// =======================
 
 function formatDate(date){
 
@@ -352,6 +413,9 @@ return `${d}-${m}-${y}`;
 }
 
 
+// =======================
+// ADD PROCESS
+// =======================
 
 document.getElementById("addProcessBtn").addEventListener("click", addProcessRow);
 
@@ -369,6 +433,9 @@ row.innerHTML = `
 
 <td>
 <select class="machine"></select>
+<input type="text" class="machine-other"
+placeholder="Enter Machine/Vendor"
+style="display:none;margin-top:4px;">
 </td>
 
 <td><input type="date" class="start"></td>
@@ -393,27 +460,6 @@ row.innerHTML = `
 
 processRows.appendChild(row);
 
-
-/* Machine dropdown */
-
-let machineSelect = row.querySelector(".machine");
-
-let defaultOpt = document.createElement("option");
-defaultOpt.value = "";
-defaultOpt.textContent = "Select Machine/Vendor Name";
-defaultOpt.disabled = true;
-defaultOpt.selected = true;
-
-machineSelect.appendChild(defaultOpt);
-
-machines.forEach(m => {
-
-let opt = document.createElement("option");
-opt.value = m;
-opt.textContent = m;
-
-machineSelect.appendChild(opt);
-
-});
+setupMachineDropdown(row);
 
 }

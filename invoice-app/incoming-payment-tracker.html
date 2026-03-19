@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Incoming Payment Tracker</title>
+<link rel="stylesheet" href="css/payment-tracker.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+            <!-- Navigation Bar -->
+<div id="navbar"></div>
+
+    <!-- Filter Buttons -->
+<div class="filter-buttons">
+
+<button onclick="filterInvoices('all')">All</button>
+<button onclick="filterInvoices('Pending')">Pending</button>
+<button onclick="filterInvoices('Received')">Received</button>
+<button onclick="filterInvoices('Overdue')">Overdue</button>
+
+</div>
+
+<h1>Incoming Payment Tracker</h1>
+
+<!-- Customer Dashboard -->
+<div class="customer-dashboard">
+
+<div class="card">
+<h3>Total Pending</h3>
+<p id="totalPending">₹0</p>
+</div>
+
+<div class="card">
+<h3>Total Received</h3>
+<p id="totalReceived">₹0</p>
+</div>
+
+<div class="card">
+<h3>Total Overdue</h3>
+<p id="totalOverdue">₹0</p>
+</div>
+
+</div>
+
+<!-- Search Bar -->
+<input 
+type="text" 
+id="searchInput" 
+placeholder="Search Invoice, Customer, or Month..."
+style="padding:8px; margin-bottom:15px; width:250px;"
+>
+
+<!-- Payment Table -->
+
+<table class="payment-table">
+
+<thead>
+
+<tr>
+<th>Invoice No</th>
+<th>Customer</th>
+<th>Invoice Date</th>
+<th>Due Date</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Overdue</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="paymentBody">
+
+<!-- rows will come from JS -->
+
+</tbody>
+
+</table>
+
+<script src="js/navbar.js"></script>
+<script src="js/database.js"></script>
+<script src="js/incoming-payment-tracker.js"></script>
+<script src="js/auth.js"></script>
+
+
+</body>
+</html>

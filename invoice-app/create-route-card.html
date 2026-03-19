@@ -1,94 +1,95 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
-<html>
-<head>
-<title>Create Route Card</title>
+    <html>
+    <head>
+    <title>Create Route Card</title>
 
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/route-card.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/route-card.css">
 
-</head>
+    </head>
 
-<body class="route-card-page">
+    <body class="route-card-page">
 
-<div id="navbar"></div>
+    <div id="navbar"></div>
 
-<div class="container">
+    <div class="container">
 
-<h1>Create Route Card</h1>
+    <h1>Create Route Card</h1>
 
-<div class="grid">
+    <div class="grid">
 
-<div class="form-group">
-<label>Route Card No</label>
-<input type="text" id="rcNo">
-</div>
+    <div class="form-group">
+    <label>Route Card No</label>
+    <input type="text" id="rcNo">
+    </div>
 
-<div class="form-group">
-<label>Customer</label>
-<select id="rcCustomer"></select>
-</div>
+    <div class="form-group">
+    <label>Customer</label>
+    <select id="rcCustomer"></select>
+    </div>
 
-<div class="form-group">
-<label>Product</label>
-<select id="rcProduct"></select>
-</div>
+    <div class="form-group">
+    <label>Product</label>
+    <input type="text" id="rcProduct" list="productList" placeholder="Select or type product">
+<datalist id="productList"></datalist>
+    </div>
 
-<div class="form-group">
-<label>Part Number</label>
-<input type="text" id="rcPartNo">
-</div>
+    <div class="form-group">
+    <label>Part Number</label>
+    <input type="text" id="rcPartNo">
+    </div>
 
-<div class="form-group">
-<label>Quantity</label>
-<input type="number" id="rcQty">
-</div>
+    <div class="form-group">
+    <label>Quantity</label>
+    <input type="number" id="rcQty">
+    </div>
 
-<div class="form-group">
-<label>PO No</label>
-<input type="text" id="rcPoNo">
-</div>
+    <div class="form-group">
+    <label>PO No</label>
+    <input type="text" id="rcPoNo">
+    </div>
 
-</div>
+    </div>
 
-<h2>Processes</h2>
+    <h2>Processes</h2>
 
-<div class="table-container">
+    <div class="table-container">
 
-<table>
+    <table>
 
-<thead>
-<tr>
-<th>SL</th>
-<th>Process</th>
-<th>Machine/Vendor</th>
-<th>Start Date</th>
-<th>End Date</th>
-<th>Produced</th>
-<th>Accepted</th>
-<th>Rework</th>
-<th>Rejected</th>
-<th>Operator</th>
-<th>Actions</th>
-</tr>
-</thead>
+    <thead>
+    <tr>
+    <th>SL</th>
+    <th>Process</th>
+    <th>Machine/Vendor</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Produced</th>
+    <th>Accepted</th>
+    <th>Rework</th>
+    <th>Rejected</th>
+    <th>Operator</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
 
-<tbody id="processRows"></tbody>
+    <tbody id="processRows"></tbody>
 
-</table>
-<br>
-<button type="button" class="btn" id="addProcessBtn">+ Add Process</button>
+    </table>
+    <br>
+    <button type="button" class="btn" id="addProcessBtn">+ Add Process</button>
 
-</div>
-<br>
+    </div>
+    <br>
 
-<button class="btn btn-green" onclick="saveRouteCard()">Save Route Card</button>
+    <button class="btn btn-green" onclick="saveRouteCard()">Save Route Card</button>
 
-</div>
+    </div>
 
-<script src="js/navbar.js"></script>
-<script src="js/route-card.js"></script>
-<script src="js/auth.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/route-card.js"></script>
+    <script src="js/auth.js"></script>
 
-</body>
-</html>
+    </body>
+    </html>

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Invoice = require("../models/invoice");
 const Payment = require("../models/paymentModel");
-const PurchaseOrder = require("../models/PurchaseOrder");
+const PurchaseOrder = require("../models/purchaseOrder");
 
 // GET all invoices
 router.get("/", async (req, res) => {

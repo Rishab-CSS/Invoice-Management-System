@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const PurchaseOrder = require("../models/PurchaseOrder");
+const PurchaseOrder = require("../models/purchaseOrder");
 
 // CREATE PO
 router.post("/", async (req, res) => {

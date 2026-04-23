@@ -1,0 +1,333 @@
+/* =========================
+   ROUTE CARD PAGE TITLE
+========================= */
+
+h1{
+margin-bottom:20px;
+font-size:24px;
+}
+
+
+/* =========================
+   FORM GRID
+========================= */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:25px;
+}
+
+.form-group{
+display:flex;
+flex-direction:column;
+}
+
+.form-group label{
+font-weight:600;
+margin-bottom:5px;
+}
+
+.form-group input,
+.form-group select{
+width: 100%;
+min-height: 48px;
+padding:10px 12px;
+border:1px solid var(--border);
+border-radius:4px;
+font-size:14px;
+background:var(--input-bg);
+color:var(--text-main);
+line-height:1.3;
+}
+
+
+/* =========================
+   PROCESS TABLE
+========================= */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+table th{
+background:var(--surface);
+color:var(--text-sec);
+font-weight:600;
+text-transform:uppercase;
+}
+
+table th,
+table td{
+border-bottom:1px solid var(--border);
+padding:8px;
+text-align:left;
+font-size:14px;
+}
+
+
+/* =========================
+   INPUTS INSIDE TABLE
+========================= */
+
+table input{
+width:100%;
+padding:5px;
+border:1px solid var(--border);
+border-radius:3px;
+font-size:13px;
+background:var(--input-bg);
+color:var(--text-main);
+}
+
+
+/* =========================
+   PROCESS NAME COLUMN
+========================= */
+
+.process-name{
+font-weight:600;
+color:var(--text-sec);
+}
+
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+.btn{
+padding:8px 14px;
+border:none;
+border-radius:4px;
+cursor:pointer;
+background:#007bff;
+color:white;
+font-size:14px;
+}
+
+.btn:hover{
+background:#0056b3;
+}
+
+.btn-green{
+background:#28a745;
+}
+
+.btn-green:hover{
+background:#1e7e34;
+}
+
+
+/* =========================
+   TABLE SCROLL (FOR SMALL SCREENS)
+========================= */
+
+.table-container{
+overflow-x:auto;
+}
+
+
+/* =========================
+   NUMBER INPUT ALIGNMENT
+========================= */
+
+input[type="number"]{
+text-align:center;
+}
+
+
+/* =========================
+   ROUTE CARD HEADER STYLE
+========================= */
+
+.grid .form-group input[readonly]{
+background:transparent;
+color:var(--text-sec);
+font-weight:500;
+opacity:0.7;
+}
+
+
+/* =========================
+   ROUTE CARD TABLE
+========================= */
+
+#processRows td,
+#processRows th{
+text-align:center;
+vertical-align:middle;
+}
+
+#processRows td:nth-child(2){
+text-align:left;
+font-weight:500;
+}
+
+#processRows input{
+width:100%;
+padding:5px;
+border:1px solid var(--border);
+border-radius:4px;
+font-size:13px;
+box-sizing:border-box;
+}
+
+#processRows input[type="date"]{
+min-width:130px;
+}
+
+#processRows input[type="number"]{
+text-align:center;
+}
+
+#processRows select,
+#processRows input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 13px;
+    box-sizing: border-box;
+    background: var(--input-bg) !important;
+    color: var(--text-main) !important;
+}
+
+#processRows select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+}
+
+#processRows option {
+    background: var(--surface) !important;
+    color: var(--text-main) !important;
+}
+
+#processRows select::-ms-expand {
+    display: none;
+}
+
+#processRows input[type="number"]{
+text-align:center;
+}
+
+#processRows td:first-child{
+width:40px;
+font-weight:600;
+}
+
+#processRows td:nth-child(2){
+min-width:150px;
+}
+
+#processRows td:nth-child(3){
+min-width:160px;
+}
+
+#processRows td:last-child{
+min-width:130px;
+}
+
+#processRows tr{
+height:42px;
+}
+
+#processRows tr:nth-child(even){
+background:transparent;
+}
+
+
+/* =========================
+   ROUTE CARD PAGE CONTAINER
+========================= */
+
+.route-card-page .container{
+max-width: 1400px;
+}
+
+/* Route Card action buttons */
+
+/* Route card action buttons */
+
+.rc-actions{
+display:flex;
+gap:8px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+/* Equal button size */
+
+.rc-actions .btn,
+.rc-actions .btn-danger{
+width:80px;
+text-align:center;
+padding:6px 0;
+border-radius:6px;
+}
+
+/* =========================
+   VIEW ROUTE CARDS TABLE
+========================= */
+
+#rcTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+}
+
+#rcTable th,
+#rcTable td {
+    padding: 1rem 0.85rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    text-align: center;
+}
+
+#rcTable th {
+    background: var(--bg);
+    color: var(--text-sec);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+}
+
+#rcTable tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#rcTable tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#rcTable td {
+    background: var(--surface);
+    color: var(--text-main);
+}
+
+#rcTable td:last-child {
+    text-align: center;
+    white-space: nowrap;
+}
+
+#rcTable .rc-actions {
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+#rcTable .rc-actions .btn,
+#rcTable .rc-actions .btn-danger {
+    width: auto;
+    min-width: 80px;
+    padding: 0.65rem 0.85rem;
+    border-radius: 4px;
+}
+
+#rcTable .btn {
+    font-weight: 700;
+}

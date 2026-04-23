@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+      <div id="navbar"></div>
+
+
+    <!-- Overlay -->
+    <div id="loadingOverlay">
+        <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">Generating Invoice...</div>
+        <div style="margin-top: 1rem; color: var(--text-sec);">Process local...</div>
+    </div>
+
+
+
+    <div class="container">
+        <h1 id="pageTitle">Invoice Generator</h1>
+
+        <form id="invoiceForm">
+            <!-- Header -->
+            <div class="grid">
+                <div class="form-group">
+                    <label>Invoice No</label>
+                    <input type="text" name="invoiceNo" placeholder="e.g. INV-001">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="date">
+                </div>
+            </div>
+
+            <!-- Customer -->
+            <div class="grid">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select id="customerSelect" onchange="loadCustomer()">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>GSTIN</label>
+                    <input type="text" id="gstin" readonly style="opacity: 0.7; cursor: not-allowed;" placeholder="GSTIN">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label>Address</label>
+                <textarea id="address" readonly style="opacity: 0.7; cursor: not-allowed;" placeholder="Address"></textarea>
+            </div>
+
+<div class="grid">
+
+<div class="form-group">
+<label>Select PO</label>
+
+<select id="poSelect">
+</select>
+
+</div>
+
+<div class="form-group">
+<label>PO Date</label>
+<input type="date" name="poDate" readonly>
+</div>
+
+</div>
+
+
+<!-- PO ITEM PANEL -->
+<div id="poItemPanel" style="display:none; margin-top:20px;">
+
+<h3>Select Items from PO</h3>
+
+<table id="poItemTable" style="width:100%; text-align:center;">
+<thead>
+<tr>
+<th>Select</th>
+<th>Part</th>
+<th>Part No</th>
+<th>HSN</th>
+<th>Ordered Qty</th>
+<th>Pending Qty</th>
+<th>Rate</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+</table>
+
+<br>
+
+<button type="button" class="btn btn-green" onclick="addSelectedPOItems()">
+Add Selected Items
+</button>
+
+</div>
+
+
+            <!-- Items -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 4%; text-align: center;">SL</th>
+                            <th style="width: 25%; text-align: center;">Description of Goods</th>
+                            <th style="width: 15%; text-align: center;">Part No.</th>
+                            <th style="width: 13%; text-align: center;">HSN/SAC</th>
+                            <th style="width: 14%; text-align: center;">Qty</th>
+                            <th style="width: 14%; text-align: center;">Rate</th>
+                            <th style="width: 30%; text-align: center;">Total</th>
+                            <th style="width: 6%; text-align: center;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsBody"></tbody>
+                </table>
+            </div>
+            
+            <button type="button" class="btn" id="addItemBtn" style="margin-top: 10px;">+ Add Item</button>
+
+            <!-- Totals -->
+            <div class="grid" style="margin-top: 20px; grid-template-columns: 1fr 1.2fr;">
+                <div>
+                    <label>GST Type</label>
+                    <select id="gstType" style="max-width: 245px;">
+                        <option value="9">CGST (9%) + SGST (9%)</option>
+                        <option value="18">IGST (18%)</option>
+                    </select>
+                </div>
+                <div class="summary-box">
+                    <div class="summary-row"><span>Sub Total:</span><span id="subTotal">0.00</span></div>
+                    <div class="summary-row" id="gstLabel"><span>IGST (18%):</span><span id="taxTotal">0.00</span></div>
+                    <div class="summary-row"><span>Rounding:</span><span id="rounding">0.00</span></div>
+                    <div class="summary-row grand-total"><span>Grand Total:</span><span id="grandTotal">0.00</span>
+                    </div>
+                    <div style="font-style: italic; color: #64748b; margin-top: 8px; font-size: 0.9rem;"
+                        id="amountWords">Zero Only</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="text-align: right; margin-top: 30px; display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn btn-green" id="generateBtn">
+                    Generate & Download
+                </button>
+            </div>
+        </form>
+    </div>
+    
+<script src="template/template.js"></script>
+<script src="js/database.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="js/navbar.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/script.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+
+</html>

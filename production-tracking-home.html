@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body class="no-scroll">
+
+    <div id="navbar"></div>
+
+    <div class="container">
+
+        <h1>Production</h1>
+
+        <div class="hub-container">
+
+            <div class="hub-card" onclick="goToProductionTracking()">
+                Production Tracking
+            </div>
+
+            <div class="hub-card" onclick="goToViewProduction()">
+                View Production
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/navbar.js"></script>
+
+    <script>
+        function goToProductionTracking() {
+            window.location.href = "production-tracking.html";
+        }
+
+        function goToViewProduction() {
+            window.location.href = "production-view.html";
+        }
+    </script>
+
+</body>
+
+</html>

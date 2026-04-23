@@ -1,0 +1,82 @@
+<html>
+<header>
+  <link rel="stylesheet" href="css/style.css">
+  <nav class="navbar">
+    <div class="nav-item"><a id="navHome" href="index.html">Home</a></div>
+
+    <div class="nav-item">
+      <a id="navInvoice" href="invoice.html">Invoice</a>
+      <div class="dropdown">
+        <a href="create.html">Create Invoice</a>
+        <a href="history.html">View Invoices</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a id="navPurchase" href="purchase-home.html">Purchase</a>
+      <div class="dropdown">
+        <div class="dropdown-submenu">
+          <a href="purchase-orders.html">Purchase Orders</a>
+          <div class="dropdown">
+            <a href="create-po.html">Create Purchase Order</a>
+            <a href="view-po.html">View Purchase Orders</a>
+          </div>
+        </div>
+        <div class="dropdown-submenu">
+          <a href="purchase-invoice.html">Purchase Invoices</a>
+          <div class="dropdown">
+            <a href="add-purchase-invoice.html">Add Purchase Invoice</a>
+            <a href="view-purchase-invoice.html">View Purchase Invoice</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a id="navPayment" href="payment-tracker.html">Payment Tracker</a>
+      <div class="dropdown">
+        <a href="incoming-payment-tracker.html">Incoming Payments</a>
+        <a href="outgoing-payment-tracker.html">Outgoing Payments</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a id="navProduction" href="production-tracking-home.html">Production</a>
+      <div class="dropdown">
+        <a href="production-tracking.html">Production Tracking</a>
+        <a href="production-view.html">View Production</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
+      <a id="navISO" href="iso-documents.html">ISO Informations</a>
+      <div class="dropdown">
+        <a href="customers.html">Customers</a>
+        <div class="dropdown-submenu">
+          <a href="products-home.html">Products</a>
+          <div class="dropdown">
+            <a href="products.html">View / Add Products</a>
+            <a href="process-products.html">Process Of Products</a>
+          </div>
+        </div>
+        <a href="employee.html">Employee Details</a>
+        <div class="dropdown-submenu">
+          <a href="route-cards-home.html">Route Cards</a>
+          <div class="dropdown">
+            <a href="create-route-card.html">Create Route Card</a>
+            <a href="view-route-cards.html">View Route Cards</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-item"><a id="navDashboard" href="analytics.html">Dashboard</a></div>
+    <div class="nav-item"><a id="navLogout" href="#" onclick="logout()">Logout</a></div>
+  </nav>
+</header>
+
+<body>
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+</body>
+
+</html>

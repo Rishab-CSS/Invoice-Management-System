@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Production Tracking</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/customer.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body class="wide-table">
+
+<!-- Navbar -->
+<div id="navbar"></div>
+
+<div class="page-container">
+
+<h2>Production Tracking</h2>
+
+<!-- STEP 1: PRODUCT -->
+<div class="customer-form">
+
+<input type="text" id="productInput" placeholder="Product Name">
+<input type="number" id="qtyInput" placeholder="Total Qty">
+
+<button id="createBtn" onclick="createProduction()">Save</button>
+
+</div>
+
+<hr>
+
+<!-- STEP 2: PROCESS SECTION -->
+<div id="processSection" style="display:none;">
+
+<h3>Processes</h3>
+
+<div class="table-container">
+
+<table class="styled-table">
+<thead>
+<tr>
+<th>Process</th>
+<th>Machine/Vendor</th>
+<th>Produced Qty</th>
+<th>Accepted Qty</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Operator</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="processTable"></tbody>
+</table>
+
+</div>
+
+<div style="margin-top:15px;">
+  <button class="btn" onclick="addRow()">+ Add Process</button>
+</div>
+
+<div style="margin-top:20px;">
+<button id="saveBtn" class="btn btn-green big-btn" onclick="saveProcess()">Save</button>
+</div>
+
+
+
+
+</div>
+
+</div>
+
+
+<script src="js/navbar.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/production.js"></script>
+
+</body>
+</html>

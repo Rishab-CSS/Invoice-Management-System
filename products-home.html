@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body class="no-scroll">
+
+<div id="navbar"></div>
+
+<div class="container">
+
+<h1>Products Module</h1>
+
+<div class="hub-container">
+
+    <div class="hub-card" onclick="goToProducts()">
+        View / Add Products
+    </div>
+
+    <div class="hub-card" onclick="goToProcesses()">
+        Process Of Products
+    </div>
+
+</div>
+
+</div>
+
+<script src="js/navbar.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+function goToProducts(){
+    window.location.href = "products.html";
+}
+
+function goToProcesses(){
+    window.location.href = "process-products.html";
+}
+</script>
+
+</body>
+</html>

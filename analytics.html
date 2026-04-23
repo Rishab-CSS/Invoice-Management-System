@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Analytics Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/analytics.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+
+  <div class="analytics-container">
+
+    <h2>Analytics Dashboard</h2>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+
+      <div class="controls">
+        <select id="monthFilter" class="chart-filter">
+          <option value="all">All Months</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-container">
+      <div class="kpi-card">
+        <h3>Total Revenue</h3>
+        <p id="totalRevenue">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Payments Received</h3>
+        <p id="paymentsReceived">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Pending Incoming</h3>
+        <p id="pendingIncoming">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Payments Made</h3>
+        <p id="paymentsMade">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Pending Outgoing</h3>
+        <p id="pendingOutgoing">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Top Product</h3>
+        <p id="topProduct">-</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Top Customer</h3>
+        <p id="topCustomer">-</p>
+      </div>
+      
+      <div class="kpi-card">
+        <h3>Company Growth</h3>
+        <p id="companyGrowth">0%</p>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+
+      <div class="chart-box">
+        <div class="chart-header">
+          <h3>📊 Monthly Revenue</h3>
+          <select id="revenueMonthFilter" class="chart-filter">
+            <option value="all">All Months</option>
+          </select>
+        </div>
+        <div class="chart-wrapper"><canvas id="revenueChart"></canvas></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-header">
+          <h3>🏭 Production</h3>
+          <select id="productionMonthFilter" class="chart-filter">
+            <option value="all">All Months</option>
+          </select>
+        </div>
+        <div class="chart-wrapper"><canvas id="productionChart"></canvas></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-header">
+          <h3>💰 Payments Overview</h3>
+          <select id="paymentMonthFilter" class="chart-filter">
+            <option value="all">All Months</option>
+          </select>
+        </div>
+        <div class="chart-wrapper"><canvas id="paymentChart"></canvas></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-header">
+          <h3>⏳ Pending Payments</h3>
+          <select id="pendingMonthFilter" class="chart-filter">
+            <option value="all">All Months</option>
+          </select>
+        </div>
+        <div class="chart-wrapper"><canvas id="pendingChart"></canvas></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- PRODUCT DETAILS POPUP -->
+  <div id="productDetails" class="popup">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h4 id="productTitle"></h4>
+        <span class="close-btn" onclick="closePopup()">✖</span>
+      </div>
+      <div id="productData"></div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/auth.js"></script>
+
+
+</body>
+
+</html>

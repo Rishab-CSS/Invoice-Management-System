@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Process Of Products</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<div class="container">
+
+<h1>Process Of Products</h1>
+
+<table>
+<thead>
+<tr>
+    <th>SL</th>
+    <th>Product Name</th>
+    <th>Processes</th>
+    <th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="processTable"></tbody>
+</table>
+
+</div>
+
+<!-- MODAL PANEL -->
+<div id="processModal" class="modal" style="display:none;">
+    <div class="modal-content">
+
+        <h3 id="modalTitle">Manage Processes</h3>
+
+        <button onclick="addProcessRow()">+ Add Process</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>SL</th>
+                    <th>Process</th>
+                    <th>Move</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="processRows"></tbody>
+        </table>
+
+        <br>
+
+        <button class="btn btn-green" onclick="saveProcesses()">Save</button>
+        <button class="btn" onclick="closeModal()">Close</button>
+
+    </div>
+</div>
+
+<script src="js/navbar.js"></script>
+<script src="js/process-products.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+</html>

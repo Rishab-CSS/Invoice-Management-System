@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Purchase Orders</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<div class="container">
+
+<h1>Purchase Orders</h1>
+
+
+
+<!-- CREATE SECTION -->
+
+<div id="createSection">
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+
+<div class="form-group">
+<label>PO Number</label>
+<input type="text" id="poNo" placeholder="PO Number">
+</div>
+
+<div class="form-group">
+<label>PO Date</label>
+<input type="date" id="poDate">
+</div>
+
+<div class="form-group">
+<label>Customer</label>
+<select id="poCustomer"></select>
+</div>
+
+</div>
+
+<h2>Items</h2>
+
+                    <div class="table-container">
+                        <table id="poItemTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%; text-align: center;">SL</th>
+                                    <th style="width: 35%;">Description</th>
+                                    <th style="width: 15%;">Part No</th>
+                                    <th style="width: 15%;">HSN</th>
+                                    <th style="width: 13%;">Qty</th>
+                                    <th style="width: 15%;">Rate</th>
+                                    <th style="width: 5%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="poItems"></tbody>
+                        </table>
+                    </div>
+
+                    <br>
+                    
+<button class="btn" onclick="addPOItem()">+ Add Item</button>
+
+<br><br>
+
+<button class="btn btn-green" onclick="savePO()">Save Purchase Order</button>
+
+</div>
+
+<!-- VIEW SECTION -->
+
+<div id="viewSection" style="display:none;">
+
+<div style="margin-bottom:15px;">
+<button onclick="filterPO('all')">All</button>
+<button onclick="filterPO('pending')">Pending</button>
+<button onclick="filterPO('completed')">Completed</button>
+</div>
+
+<div id="poList"></div>
+
+</div>
+
+</div>
+
+<script src="js/navbar.js"></script>
+<script src="js/po.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+</html>

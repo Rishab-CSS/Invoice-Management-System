@@ -1,0 +1,53 @@
+    <!DOCTYPE html>
+
+    <html>
+
+    <head>
+    <title>Purchase Orders</title>
+    <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+
+       <!-- Navigation Bar -->
+<div id="navbar"></div>
+
+    <h1>Purchase Orders</h1>
+
+    <div style="margin-bottom:15px;">
+    <button onclick="filterPO('all')">All</button>
+    <button onclick="filterPO('pending')">Pending</button>
+    <button onclick="filterPO('completed')">Completed</button>
+    </div>
+
+    <table id="poTable">
+
+    <thead>
+    <tr>
+    <th>PO No</th>
+    <th>PO Date</th>
+    <th>Customer</th>
+    <th>Items</th>
+    <th>Ordered Qty</th>
+    <th>Unit Price</th>
+    <th>Total Order Value</th>
+    <th>Pending Qty</th>
+    <th>Pending Order Value</th>
+    <th>Status</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    </tbody>
+
+    </table>
+
+    <script src="js/navbar.js"></script>
+    <script src="js/view-po.js"></script>
+    <script src="js/auth.js"></script>
+
+    </body>
+
+    </html>

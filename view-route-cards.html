@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Route Cards</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/route-card.css">
+
+</head>
+
+<body>
+
+<!-- Navigation Bar -->
+<div id="navbar"></div>
+
+
+<div class="container">
+
+<h1>Route Cards</h1>
+
+<div class="table-container">
+
+<table id="rcTable">
+
+<thead>
+
+<tr>
+<th>Route Card No</th>
+<th>INVOICE NO</th>   <!-- ✅ ADD THIS -->
+<th>Customer</th>
+<th>Product</th>
+<th>Quantity</th>
+<th style="min-width: 260px;">Actions</th>
+</tr>
+
+</thead>
+
+<tbody>
+<!-- Route cards will load here -->
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- Page Scripts -->
+
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+<script src="template/Route_card_template.js"></script>
+<script src="js/view-route-cards.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+
+</html>

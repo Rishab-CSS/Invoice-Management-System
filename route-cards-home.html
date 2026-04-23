@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Route Cards</title>
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body class="no-scroll">
+
+<div id="navbar"></div>
+
+<div class="container">
+
+<h1>Route Cards Module</h1>
+
+<div class="hub-container">
+
+    <!-- CREATE ROUTE CARD -->
+    <div class="hub-card" onclick="goToCreateRouteCard()">
+        Create Route Cards
+    </div>
+
+    <!-- VIEW ROUTE CARD -->
+    <div class="hub-card" onclick="goToViewRouteCards()">
+        View Route Cards
+    </div>
+
+</div>
+
+</div>
+
+<script src="js/navbar.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+function goToCreateRouteCard(){
+    window.location.href = "create-route-card.html";
+}
+
+function goToViewRouteCards(){
+    window.location.href = "view-route-cards.html";
+}
+</script>
+
+</body>
+</html>

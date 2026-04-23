@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Production View</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<div class="page-container">
+
+<h2>Production List</h2>
+
+<table class="styled-table">
+<thead>
+<tr>
+<th>Product</th>
+<th>Total Qty</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="productionList"></tbody>
+
+
+<!-- RC MODAL -->
+<div id="rcModal" class="modal-overlay">
+
+  <div class="modal-box">
+
+    <h3>Create Route Card</h3>
+
+    <label>Invoice No</label>
+<input type="text" id="rcInvoiceNo" placeholder="Invoice No">
+    
+    <label>PO Number</label>
+    <input type="text" id="rcPoNo" list="poList" placeholder="PO NO">
+    <datalist id="poList"></datalist>
+
+    <label>Customer</label>
+    <select id="rcCustomer"></select>
+
+    <label>Part Number</label>
+<select id="rcPartNo"></select>
+
+
+    <div class="modal-actions">
+      <button onclick="submitRC()" class="btn btn-green">Create</button>
+      <button onclick="closeRCModal()" class="btn">Cancel</button>
+    </div>
+
+  </div>
+
+</div>
+
+
+</table>
+
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/navbar.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="js/production-view.js"></script>
+
+</body>
+</html>

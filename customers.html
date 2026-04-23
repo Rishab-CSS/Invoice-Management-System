@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Management</title>
+
+<!-- Main Styles -->
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Customer Page Styles -->
+<link rel="stylesheet" href="css/customer.css">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+<div id="navbar"></div>
+
+<div class="page-container">
+
+<h2>Customer Management</h2>
+
+
+
+
+<!-- Customer Form -->
+<div class="customer-form">
+    <input type="text" id="custName" placeholder="Customer Name">
+    <textarea id="custAddress" placeholder="Address"></textarea>
+    <input type="text" id="custGST" placeholder="GST Number">
+    <input type="text" id="custVendor" placeholder="Vendor Code">
+<input type="number" id="paymentTerms" placeholder="Payment Terms e.g. 30">
+
+    <button id="customerBtn" onclick="addCustomer()">Add Customer</button>
+</div>
+
+
+<!-- Saved Customers Table -->
+<h3>Saved Customers</h3>
+
+<table id="customerTable">
+<thead>
+<tr>
+<th>Name</th>
+<th>GST</th>
+<th>Vendor Code</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+<!-- Customers will load here -->
+</tbody>
+</table>
+
+</div>
+
+
+<div id="viewPanel" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:1500;">
+
+<div class="modal-box" style="padding:25px; width:400px; margin:100px auto; border-radius:4px;">
+
+<h3>Customer Details</h3>
+
+<p><b>Name:</b> <span id="v_name"></span></p>
+<p><b>Address:</b> <span id="v_address"></span></p>
+<p><b>GST:</b> <span id="v_gst"></span></p>
+<p><b>Vendor Code:</b> <span id="v_vendor"></span></p>
+<p><b>Payment Terms:</b> <span id="v_terms"></span> days</p>
+
+<br>
+
+<button onclick="closeViewPanel()">Close</button>
+
+</div>
+
+</div>
+
+
+
+<!-- Scripts -->
+<script src="js/navbar.js"></script>
+<script src="js/customers.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+</html>

@@ -35,6 +35,13 @@ app.use(cors());
 app.use(express.json());
 
 
+
+// ✅ ADD HERE
+app.get("/ping", (req, res) => {
+  res.send("alive");
+});
+
+
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/purchase-orders", purchaseOrderRoutes);

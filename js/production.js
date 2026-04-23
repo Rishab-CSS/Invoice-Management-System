@@ -22,7 +22,7 @@ if (!role) {
 
 console.log("TRACKING PAGE JS LOADED");
 
-const API_URL = "http://localhost:3000/api/production";
+const API_URL = "https://erp-system-303n.onrender.com/api/production";
 
 let currentProductionId = null;
 
@@ -494,7 +494,7 @@ function deleteRow(btn) {
 
 
 async function loadEmployees(select) {
-  const res = await fetch("http://localhost:3000/api/employees");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/employees");
   const data = await res.json();
 
   select.innerHTML = `<option>Select Operator</option>`;
@@ -505,7 +505,7 @@ async function loadEmployees(select) {
 
 async function getOrCreateProduct(productName) {
 
-  const res = await fetch("http://localhost:3000/api/products");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/products");
   const products = await res.json();
 
   let product = products.find(
@@ -513,7 +513,7 @@ async function getOrCreateProduct(productName) {
   );
 
   if (!product) {
-    const newRes = await fetch("http://localhost:3000/api/products/add", {
+    const newRes = await fetch("https://erp-system-303n.onrender.com/api/products/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: productName })

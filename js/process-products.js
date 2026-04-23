@@ -10,8 +10,8 @@ if(!role){
 // =======================
 // API URLS
 // =======================
-const PRODUCT_API = "http://localhost:3000/api/products";
-const PROCESS_API = "http://localhost:3000/api/processes";
+const PRODUCT_API = "https://erp-system-303n.onrender.com/api/products";
+const PROCESS_API = "https://erp-system-303n.onrender.com/api/processes";
 
 // =======================
 // ELEMENTS

@@ -21,7 +21,7 @@ const itemsBody = document.getElementById("poItems");
 // FETCH CUSTOMERS
 // =========================
 async function getCustomers(){
-    let res = await fetch("http://localhost:3000/api/customers");
+    let res = await fetch("https://erp-system-303n.onrender.com/api/customers");
     return await res.json();
 }
 
@@ -176,7 +176,7 @@ async function savePO(){
 
     if(editingPO){
         // UPDATE
-        await fetch(`http://localhost:3000/api/purchase-orders/${editingPO._id}`, {
+        await fetch(`https://erp-system-303n.onrender.com/api/purchase-orders/${editingPO._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -189,7 +189,7 @@ async function savePO(){
     }
     else{
         // CREATE
-        await fetch("http://localhost:3000/api/purchase-orders", {
+        await fetch("https://erp-system-303n.onrender.com/api/purchase-orders", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

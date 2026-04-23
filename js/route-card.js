@@ -14,11 +14,11 @@ const processRows = document.getElementById("processRows");
 // =======================
 // API URLS
 // =======================
-const PRODUCT_API = "http://localhost:3000/api/products";
-const PROCESS_API = "http://localhost:3000/api/processes";
-const ROUTE_API = "http://localhost:3000/api/route-cards";
-const PO_API = "http://localhost:3000/api/purchase-orders";
-const CUSTOMER_API = "http://localhost:3000/api/customers";
+const PRODUCT_API = "https://erp-system-303n.onrender.com/api/products";
+const PROCESS_API = "https://erp-system-303n.onrender.com/api/processes";
+const ROUTE_API = "https://erp-system-303n.onrender.com/api/route-cards";
+const PO_API = "https://erp-system-303n.onrender.com/api/purchase-orders";
+const CUSTOMER_API = "https://erp-system-303n.onrender.com/api/customers";
 
 // =======================
 // DATA
@@ -115,7 +115,7 @@ async function loadProducts(){
 }
 
 async function loadOperators(){
-    const res = await fetch("http://localhost:3000/api/employees");
+    const res = await fetch("https://erp-system-303n.onrender.com/api/employees");
     operators = await res.json();
 }
 
@@ -186,7 +186,7 @@ async function fetchInvoiceDetails(){
 
     try{
 
-        const res = await fetch("http://localhost:3000/api/invoices");
+        const res = await fetch("https://erp-system-303n.onrender.com/api/invoices");
         const invoices = await res.json();
 
         const invoice = invoices.find(inv => inv.invoiceNo === invoiceNo);

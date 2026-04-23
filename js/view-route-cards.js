@@ -9,7 +9,7 @@ if(!role){
 
 const tableBody = document.querySelector("#rcTable tbody");
 
-const API = "http://localhost:3000/api/route-cards";
+const API = "https://erp-system-303n.onrender.com/api/route-cards";
 
 let routeCards = []; // now from MongoDB
 

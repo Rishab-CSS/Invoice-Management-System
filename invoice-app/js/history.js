@@ -12,7 +12,7 @@ function loadInvoices(){
 
 table.innerHTML = "";
 
-fetch("http://localhost:3000/api/invoices")
+fetch("https://erp-system-303n.onrender.com/api/invoices")
   .then(res => res.json())
   .then(invoices => {
 
@@ -48,7 +48,7 @@ loadInvoices();
 // Edit Invoice
 function editInvoice(id){
 
-  fetch(`http://localhost:3000/api/invoices/${id}`)
+  fetch(`https://erp-system-303n.onrender.com/api/invoices/${id}`)
     .then(res => res.json())
     .then(data => {
 
@@ -83,7 +83,7 @@ function deleteInvoice(id){
     return;
   }
 
-  fetch(`http://localhost:3000/api/invoices/${id}`, {
+  fetch(`https://erp-system-303n.onrender.com/api/invoices/${id}`, {
     method: "DELETE"
   })
   .then(res => res.json())
@@ -103,7 +103,7 @@ async function downloadInvoice(id){
   try{
 
     // 🔥 FETCH FROM DB
-    const res = await fetch(`http://localhost:3000/api/invoices/${id}`);
+    const res = await fetch(`https://erp-system-303n.onrender.com/api/invoices/${id}`);
     const inv = await res.json();
 
     if(!inv){

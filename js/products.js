@@ -4,7 +4,7 @@ if(!role){
   window.location.href = "login.html";
 }
 
-const API = "http://localhost:3000/api/products";
+const API = "https://erp-system-303n.onrender.com/api/products";
 
 let editId = null;
 

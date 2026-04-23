@@ -4,14 +4,14 @@ if(!role){
   window.location.href = "login.html";
 }
 
-const API_URL = "http://localhost:3000/api/payments";
+const API_URL = "https://erp-system-303n.onrender.com/api/payments";
 
 let invoices = [];
 let selectedInvoiceId = null;
 let editingPaymentId = null;
 
 async function getInvoicesFromDB(){
-  let res = await fetch("http://localhost:3000/api/invoices");
+  let res = await fetch("https://erp-system-303n.onrender.com/api/invoices");
   invoices = await res.json();
   loadPayments();
 }

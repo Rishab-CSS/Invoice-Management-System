@@ -5,7 +5,7 @@ async function login() {
 
     try {
 
-        const res = await fetch("http://localhost:3000/api/auth/login", {
+        const res = await fetch("https://erp-system-303n.onrender.com/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -4,7 +4,7 @@ window.location.href = "login.html";
 
 
 
-const API_URL = "http://localhost:3000/api/customers";
+const API_URL = "https://erp-system-303n.onrender.com/api/customers";
 
 async function getCustomers(){
     let res = await fetch(API_URL);
@@ -29,7 +29,7 @@ let currentFileName = '';
 document.querySelector('[name="invoiceNo"]').value = "...";
 
 // Fetch real latest number
-fetch("http://localhost:3000/api/invoices/latest")
+fetch("https://erp-system-303n.onrender.com/api/invoices/latest")
   .then(res => res.json())
   .then(data => {
 
@@ -432,11 +432,11 @@ Array.from(itemsBody.children).forEach(row => {
     // 🔥 CHECK EDIT MODE
     let editId = localStorage.getItem("editInvoiceId");
 
-    let url = "http://localhost:3000/api/invoices";
+    let url = "https://erp-system-303n.onrender.com/api/invoices";
     let method = "POST";
 
     if (editId) {
-        url = `http://localhost:3000/api/invoices/${editId}`;
+        url = `https://erp-system-303n.onrender.com/api/invoices/${editId}`;
         method = "PUT";
     }
 

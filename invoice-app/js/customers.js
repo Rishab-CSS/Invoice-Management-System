@@ -2,7 +2,7 @@ let customers = [];
 let editId = null;
 
 // Base API URL
-const API_URL = "http://localhost:3000/api/customers";
+const API_URL = "https://erp-system-303n.onrender.com/api/customers";
 
 // Load Customers
 async function loadCustomers() {

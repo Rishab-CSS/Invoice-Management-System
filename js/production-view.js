@@ -7,7 +7,7 @@ if(!role){
   window.location.href = "login.html";
 }
 
-const API_URL = "http://localhost:3000/api/production";
+const API_URL = "https://erp-system-303n.onrender.com/api/production";
 
 
 window.addEventListener("focus", loadProductions);
@@ -67,7 +67,7 @@ async function loadProductions() {
   const data = await res.json();
 
 
-  const rcRes = await fetch("http://localhost:3000/api/route-cards");
+  const rcRes = await fetch("https://erp-system-303n.onrender.com/api/route-cards");
   const routeCards = await rcRes.json();
 
   const table = document.getElementById("productionList");
@@ -149,7 +149,7 @@ async function createRouteCard(prodId, productName, qty) {
 
 
 async function loadCustomers(){
-  const res = await fetch("http://localhost:3000/api/customers");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/customers");
   const data = await res.json();
 
   const select = document.getElementById("rcCustomer");
@@ -168,7 +168,7 @@ async function loadCustomers(){
 }
 
 async function loadPOs(){
-  const res = await fetch("http://localhost:3000/api/purchase-orders");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/purchase-orders");
   const data = await res.json();
 
   const list = document.getElementById("poList");
@@ -188,7 +188,7 @@ document.getElementById("rcPoNo").addEventListener("input", async function(){
   if(!poNo) return;
 
   // fetch all POs
-  const res = await fetch("http://localhost:3000/api/purchase-orders");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/purchase-orders");
   const data = await res.json();
 
   // find selected PO
@@ -211,7 +211,7 @@ async function fetchInvoiceDetails() {
 
   try {
 
-    const res = await fetch(`http://localhost:3000/api/invoices`);
+    const res = await fetch(`https://erp-system-303n.onrender.com/api/invoices`);
     const invoices = await res.json();
 
     const invoice = invoices.find(inv => inv.invoiceNo === invoiceNo);
@@ -291,7 +291,7 @@ async function submitRC(){
     // =========================
     // GET PRODUCT
     // =========================
-    const prodRes = await fetch("http://localhost:3000/api/products");
+    const prodRes = await fetch("https://erp-system-303n.onrender.com/api/products");
     const products = await prodRes.json();
 
     const product = products.find(p => p.name === currentRCData.productName);
@@ -304,7 +304,7 @@ async function submitRC(){
     // =========================
     // ✅ GET FULL PRODUCTION DATA (IMPORTANT FIX)
     // =========================
-    const productionRes = await fetch(`http://localhost:3000/api/production/${currentRCData.prodId}`);
+    const productionRes = await fetch(`https://erp-system-303n.onrender.com/api/production/${currentRCData.prodId}`);
     const productionData = await productionRes.json();
 
     // =========================
@@ -325,7 +325,7 @@ async function submitRC(){
     // =========================
     // GENERATE RC NO
     // =========================
-    const rcRes = await fetch("http://localhost:3000/api/route-cards");
+    const rcRes = await fetch("https://erp-system-303n.onrender.com/api/route-cards");
     const rcData = await rcRes.json();
 
     let max = 0;
@@ -339,7 +339,7 @@ async function submitRC(){
     // =========================
     // CREATE ROUTE CARD
     // =========================
-    await fetch("http://localhost:3000/api/route-cards/add", {
+    await fetch("https://erp-system-303n.onrender.com/api/route-cards/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -24,7 +24,7 @@ function formatDate(date){
 // FETCH POS FROM BACKEND
 // =========================
 async function getPOs(){
-    let res = await fetch("http://localhost:3000/api/purchase-orders");
+    let res = await fetch("https://erp-system-303n.onrender.com/api/purchase-orders");
     return await res.json();
 }
 
@@ -147,7 +147,7 @@ async function deletePO(id){
         return;
     }
 
-    await fetch(`http://localhost:3000/api/purchase-orders/${id}`, {
+    await fetch(`https://erp-system-303n.onrender.com/api/purchase-orders/${id}`, {
         method: "DELETE"
     });
 

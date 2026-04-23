@@ -6,7 +6,7 @@ if(!role){
 
 
 
-const API_URL = "http://localhost:3000/api/customers";
+const API_URL = "https://erp-system-303n.onrender.com/api/customers";
 
 async function getCustomers(){
     let res = await fetch(API_URL);
@@ -41,7 +41,7 @@ if (!localStorage.getItem("editInvoice")) {
     try{
 
 try {
-    let res = await fetch("http://localhost:3000/api/invoices/next-number");
+    let res = await fetch("https://erp-system-303n.onrender.com/api/invoices/next-number");
     let data = await res.json();
 
     if(data && data.invoiceNo){
@@ -233,7 +233,7 @@ customerSelect.appendChild(opt);
 
 async function loadPOList(){
 
-let res = await fetch("http://localhost:3000/api/purchase-orders");
+let res = await fetch("https://erp-system-303n.onrender.com/api/purchase-orders");
 let pos = await res.json();
 
 const select = document.getElementById("poSelect");
@@ -283,7 +283,7 @@ document.getElementById("poItemPanel").style.display="none";
 return;
 }
 
-let res = await fetch(`http://localhost:3000/api/purchase-orders/${id}`);
+let res = await fetch(`https://erp-system-303n.onrender.com/api/purchase-orders/${id}`);
 let po = await res.json();
 
 // fill PO fields
@@ -502,7 +502,7 @@ Array.from(itemsBody.children).forEach(row => {
 
 let editId = localStorage.getItem("editInvoiceId");
 
-let url = "http://localhost:3000/api/invoices";
+let url = "https://erp-system-303n.onrender.com/api/invoices";
 let method = "POST";
 
 let poId = $('#poSelect').val();
@@ -515,7 +515,7 @@ if(poId){
 }
 
 if (editId) {
-    url = `http://localhost:3000/api/invoices/${editId}`;
+    url = `https://erp-system-303n.onrender.com/api/invoices/${editId}`;
     method = "PUT";
 }
 

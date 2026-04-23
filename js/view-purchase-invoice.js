@@ -13,7 +13,7 @@ table.innerHTML = "";
 
 try {
 
-let res = await fetch("http://localhost:3000/api/purchase-invoices");
+let res = await fetch("https://erp-system-303n.onrender.com/api/purchase-invoices");
 let invoices = await res.json();
 
 invoices.forEach(inv => {
@@ -52,7 +52,7 @@ async function editInvoice(id){
 
 try {
 
-let res = await fetch(`http://localhost:3000/api/purchase-invoices/${id}`);
+let res = await fetch(`https://erp-system-303n.onrender.com/api/purchase-invoices/${id}`);
 let inv = await res.json();
 
 localStorage.setItem("editPurchaseInvoice", JSON.stringify(inv));
@@ -77,7 +77,7 @@ return;
 
 try {
 
-await fetch(`http://localhost:3000/api/purchase-invoices/${id}`, {
+await fetch(`https://erp-system-303n.onrender.com/api/purchase-invoices/${id}`, {
 method: "DELETE"
 });
 

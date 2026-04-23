@@ -14,7 +14,7 @@ function loadInvoices(){
 
 table.innerHTML = "";
 
-fetch("http://localhost:3000/api/invoices")
+fetch("https://erp-system-303n.onrender.com/api/invoices")
   .then(res => res.json())
   .then(invoices => {
 
@@ -50,7 +50,7 @@ loadInvoices();
 // Edit Invoice
 function editInvoice(id){
 
-  fetch(`http://localhost:3000/api/invoices/${id}`)
+  fetch(`https://erp-system-303n.onrender.com/api/invoices/${id}`)
     .then(res => res.json())
     .then(data => {
 
@@ -88,7 +88,7 @@ function deleteInvoice(id){
     return;
   }
 
-  fetch(`http://localhost:3000/api/invoices/${id}`, {
+  fetch(`https://erp-system-303n.onrender.com/api/invoices/${id}`, {
     method: "DELETE"
   })
   .then(res => res.json())
@@ -107,7 +107,7 @@ async function downloadInvoice(id){
 
   try{
 
-    const res = await fetch(`http://localhost:3000/api/invoices/${id}`);
+    const res = await fetch(`https://erp-system-303n.onrender.com/api/invoices/${id}`);
     const inv = await res.json();
 
     if(!inv){
@@ -118,7 +118,7 @@ async function downloadInvoice(id){
   let customer = null;
 
 try {
-    const resCust = await fetch("http://localhost:3000/api/customers");
+    const resCust = await fetch("https://erp-system-303n.onrender.com/api/customers");
     const allCustomers = await resCust.json();
 
     customer = allCustomers.find(c => c.name === inv.customerName);

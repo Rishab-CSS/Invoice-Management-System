@@ -38,12 +38,12 @@ status: "Pending"
 
 try {
 
-let url = "http://localhost:3000/api/purchase-invoices";
+let url = "https://erp-system-303n.onrender.com/api/purchase-invoices";
 let method = "POST";
 
 // 🔥 IMPORTANT PART
 if(editingInvoice && editingInvoice._id){
-  url = `http://localhost:3000/api/purchase-invoices/${editingInvoice._id}`;
+  url = `https://erp-system-303n.onrender.com/api/purchase-invoices/${editingInvoice._id}`;
   method = "PUT";
 }
 

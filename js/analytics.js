@@ -12,10 +12,10 @@ let productionMonth = "all";
 // ================= LOAD DATA =================
 async function loadAnalytics() {
   try {
-    invoices = await (await fetch("http://localhost:3000/api/invoices")).json();
-    payments = await (await fetch("http://localhost:3000/api/payments")).json();
-    productionData = await (await fetch("http://localhost:3000/api/production")).json();
-    purchaseInvoices = await (await fetch("http://localhost:3000/api/purchase-invoices")).json();
+    invoices = await (await fetch("https://erp-system-303n.onrender.com/api/invoices")).json();
+    payments = await (await fetch("https://erp-system-303n.onrender.com/api/payments")).json();
+    productionData = await (await fetch("https://erp-system-303n.onrender.com/api/production")).json();
+    purchaseInvoices = await (await fetch("https://erp-system-303n.onrender.com/api/purchase-invoices")).json();
 
     setupMonthFilters();
     updateChartTheme();

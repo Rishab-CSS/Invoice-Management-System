@@ -11,7 +11,7 @@ if(!role){
 let invoices = [];
 
 async function loadInvoicesFromDB() {
-  const res = await fetch("http://localhost:3000/api/purchase-invoices");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/purchase-invoices");
   invoices = await res.json();
 
   renderInvoices(); // call render
@@ -28,7 +28,7 @@ function formatCurrency(value) {
 async function renderInvoices() {
 
   // 🔥 Fetch payments
-  const payRes = await fetch("http://localhost:3000/api/payments");
+  const payRes = await fetch("https://erp-system-303n.onrender.com/api/payments");
   const payments = await payRes.json();
 
   tbody.innerHTML = "";
@@ -152,7 +152,7 @@ if (currentFilter === "Paid" && status !== "Paid") return;
 }
 
 async function loadPayments() {
-  const res = await fetch("http://localhost:3000/api/payments");
+  const res = await fetch("https://erp-system-303n.onrender.com/api/payments");
   const data = await res.json();
 
   tbody.innerHTML = "";
@@ -222,7 +222,7 @@ async function confirmPayment() {
     // ================= UPDATE PAYMENT =================
     if (editingPaymentId) {
 
-      await fetch(`http://localhost:3000/api/payments/${editingPaymentId}`, {
+      await fetch(`https://erp-system-303n.onrender.com/api/payments/${editingPaymentId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
@@ -317,7 +317,7 @@ async function confirmPayment() {
         }
       }
 
-      await fetch("http://localhost:3000/api/payments", {
+      await fetch("https://erp-system-303n.onrender.com/api/payments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -400,7 +400,7 @@ function clearPanel(){
 
 async function viewPayments(invoiceNo){
 
-  let res = await fetch("http://localhost:3000/api/payments");
+  let res = await fetch("https://erp-system-303n.onrender.com/api/payments");
   let data = await res.json();
 
 let payments;
@@ -455,7 +455,7 @@ async function deletePayment(id, invoiceNo){
 
   if (!confirm("Delete this payment?")) return;
 
-  await fetch(`http://localhost:3000/api/payments/${id}`, {
+  await fetch(`https://erp-system-303n.onrender.com/api/payments/${id}`, {
     method: "DELETE"
   });
 
@@ -470,7 +470,7 @@ async function deletePayment(id, invoiceNo){
 
 async function editPayment(id){
 
-  let res = await fetch("http://localhost:3000/api/payments");
+  let res = await fetch("https://erp-system-303n.onrender.com/api/payments");
   let data = await res.json();
 
   let payment = data.find(p => p._id === id);
@@ -508,7 +508,7 @@ async function openManualPay(groupId){
 
   // fetch existing manual group description so it stays with subsequent payments
   try {
-    const res = await fetch("http://localhost:3000/api/payments");
+    const res = await fetch("https://erp-system-303n.onrender.com/api/payments");
     const data = await res.json();
     const groupPayment = data.find(p => String(p.manualGroupId) === String(groupId) || String(p._id) === String(groupId));
     currentManualDescription = groupPayment?.description || "";
@@ -535,18 +535,18 @@ async function deleteInvoice(id, invoiceNo){
   try {
 
     // 1. delete invoice
-    await fetch(`http://localhost:3000/api/purchase-invoices/${id}`, {
+    await fetch(`https://erp-system-303n.onrender.com/api/purchase-invoices/${id}`, {
       method: "DELETE"
     });
 
     // 2. delete related payments
-    let res = await fetch("http://localhost:3000/api/payments");
+    let res = await fetch("https://erp-system-303n.onrender.com/api/payments");
     let payments = await res.json();
 
     let related = payments.filter(p => p.invoiceNo === invoiceNo);
 
     for(let p of related){
-      await fetch(`http://localhost:3000/api/payments/${p._id}`, {
+      await fetch(`https://erp-system-303n.onrender.com/api/payments/${p._id}`, {
         method: "DELETE"
       });
     }
@@ -566,7 +566,7 @@ async function deleteManualGroup(groupId){
 
   try {
 
-    let res = await fetch("http://localhost:3000/api/payments");
+    let res = await fetch("https://erp-system-303n.onrender.com/api/payments");
     let data = await res.json();
 
     console.log("Group ID:", groupId);
@@ -581,7 +581,7 @@ let related = data.filter(p =>
     console.log("To delete:", related);
 
     for(let p of related){
-      await fetch(`http://localhost:3000/api/payments/${p._id}`, {
+      await fetch(`https://erp-system-303n.onrender.com/api/payments/${p._id}`, {
         method: "DELETE"
       });
     }

@@ -8,14 +8,18 @@
 
     <style>
 
+
+html, body {
+    overflow-x: hidden;
+}
         /* TOP BAR */
         .top-bar {
             display: flex;
             justify-content: flex-end;
             padding: 15px 30px;
             border-color: white;
-border: 1px solid var(--border);        }
-
+        }
+        
         .logout-btn {
             background: rgba(0, 0, 0, 0.7);
             color: white;
@@ -24,6 +28,7 @@ border: 1px solid var(--border);        }
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            justify-content: flex-end;
         }
 
         .logout-btn:hover {

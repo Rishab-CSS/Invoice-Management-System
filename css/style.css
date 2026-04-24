@@ -22,6 +22,9 @@
     /* Hollow inputs matching bg */
 }
 
+* {
+    box-sizing: border-box;
+}
 
 
 html, body {
@@ -247,6 +250,11 @@ button[onclick*="save"]:hover {
 }
 
 /* TABLES */
+
+
+
+
+
 .table-container {
     margin-top: 2.5rem;
     width: 100%;
@@ -255,8 +263,8 @@ button[onclick*="save"]:hover {
     border-radius: 4px;
 }
 
-table {
-    min-width: 700px;
+.table-container table {
+    min-width: 700px;   /* only inside scroll container */
 }
 
 
@@ -650,12 +658,16 @@ table tr:hover {
     gap: 1.5rem;
     margin-top: 2rem;
     justify-content: flex-start;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     padding-top: 1rem;
 }
 
+.hub-container {
+    padding: 0 10px;   /* keeps content inside screen */
+}
+
 .hub-card {
-    padding: 2.5rem 3rem;
+    padding: 20px;
     border-radius: 4px;
     background: var(--surface);
     cursor: pointer;
@@ -785,10 +797,11 @@ table tr:hover {
 }
 
 .page-container {
-    width: 95%;
+    width: 100%;
     max-width: 1400px;
-    /* Extreme wide for enterprise tech look */
     margin: auto;
+    padding: 0 12px;   /* 🔥 THIS FIXES RIGHT CUT */
+    box-sizing: border-box;
 }
 
 .customer-dashboard {
@@ -940,12 +953,12 @@ body.no-scroll {
 /* TABLET (<= 1024px) */
 @media screen and (max-width: 1024px) {
     .container {
-        padding: 2rem;
-        width: 95%;
+        padding: 1rem;
+        width: 100%;
     }
 
     .page-container {
-        width: 98%;
+        width: 100%;
     }
 
     .kpi-container {
@@ -960,7 +973,7 @@ body.no-scroll {
     }
 
     .container {
-        padding: 1.5rem;
+        padding: 1rem;
         margin-top: 10px;
         box-shadow: none;
         border-radius: 0;

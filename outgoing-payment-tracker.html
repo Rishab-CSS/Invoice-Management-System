@@ -41,10 +41,9 @@
 
 
 
-  <div style="display:flex; align-items:center; gap: 10px; margin-bottom:15px;">
+<div class="filter-container">
 
-    <input type="text" id="searchInput" class="styled-input" placeholder="Search Invoice, Vendor, or Month..."
-      style="padding:10px; width:350px; background:var(--input-bg); color:var(--text-main); border:1px solid var(--border); border-radius:4px;">
+    <input type="text" id="searchInput" class="styled-input" placeholder="Search Invoice, Vendor, or Month...">
 
     <div class="filter-buttons">
       <button onclick="openManualPayment()">
@@ -61,7 +60,7 @@
 
 
   <!-- Payment Table -->
-
+<div class="table-container">
   <table class="payment-table">
 
     <thead>
@@ -81,7 +80,7 @@
     <tbody id="paymentBody"></tbody>
 
   </table>
-
+</div>
 
   <!-- PAYMENT PANEL -->
 

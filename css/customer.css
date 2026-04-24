@@ -115,23 +115,38 @@ h2 {
         padding: 8px;
     }
 
+
     .customer-form button {
+        
         width: 100%;
         padding: 12px;
     }
 
     /* 🔥 TABLE FIX */
     #customerTable {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+        width: max-content;
+         min-width: 100%;
     }
 
     #customerTable th,
     #customerTable td {
         font-size: 12px;
         padding: 8px;
+        text-align: center;
     }
+
+#customerTable button {
+    padding: 4px 8px !important;     /* 🔥 smaller */
+    font-size: 11px !important;      /* 🔥 compact text */
+    font-weight: 500 !important;
+    border-radius: 3px !important;
+
+    display: inline-block !important; /* 🔥 remove flex stretch */
+    width: auto !important;           /* 🔥 prevent full width */
+    min-width: unset !important;
+
+    text-transform: none !important;  /* 🔥 remove uppercase */
+}
 
 }
 

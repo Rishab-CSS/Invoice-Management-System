@@ -12,26 +12,41 @@ let editId = null;
 // LOAD PRODUCTS
 // =======================
 
-async function loadProducts(){
+async function loadProducts() {
     const res = await fetch(API);
     const data = await res.json();
 
     const table = document.getElementById("productTable");
     table.innerHTML = "";
 
-    data.forEach(p => {
-        table.innerHTML += `
+    // 🔥 EMPTY STATE
+    if (!data || data.length === 0) {
+        table.innerHTML = `
         <tr>
-            <td>${p.name}</td>
-            <td>
-                <button onclick="editProduct('${p._id}')">Edit</button>
-                <button onclick="deleteProduct('${p._id}')">Delete</button>
+            <td colspan="2" style="text-align:center; padding:20px; color:#888;">
+                No contents to display
             </td>
         </tr>
         `;
-    });
+        return;
+    }
 
-    applyEmptyState();
+    // 🔥 NORMAL DATA
+    data.forEach(p => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${p.name}</td>
+            <td>
+                <div class="action-buttons">
+                    <button onclick="editProduct('${p._id}')">Edit</button>
+                    <button class="btn-danger" onclick="deleteProduct('${p._id}')">Delete</button>
+                </div>
+            </td>
+        `;
+
+        table.appendChild(row);
+    });
 }
 
 // =======================

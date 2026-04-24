@@ -4,6 +4,33 @@
     <title>Products</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        table td button {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    font-weight: 600;
+
+    display: inline-block !important;
+    width: auto !important;
+
+    text-transform: none !important;
+    border-radius: 4px;
+}
+
+#productTable {
+    width: 100%;
+    table-layout: fixed;   /* 🔥 IMPORTANT */
+}
+
+#productTable th,
+#productTable td {
+    width: 50%;            /* 2 columns → split equally */
+    text-align: center;
+}
+
+
+    </style>
 </head>
 
 <body>
@@ -28,6 +55,7 @@
 
 <h2>Saved Products</h2>
 
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -39,7 +67,7 @@
 <tbody id="productTable"></tbody>
 
 </table>
-
+</div>
 </div>
 
 <script src="js/navbar.js"></script>

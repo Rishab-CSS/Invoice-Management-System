@@ -55,7 +55,8 @@ if (data && data.processes && data.processes.length > 0) {
             font-size:12px;
             font-weight: 600;
             border:1px solid rgba(56, 189, 248, 0.2);
-            width:fit-content;
+max-width:100%;
+word-break:break-word;
         ">
             ${proc.name}
         </span>`;
@@ -75,8 +76,11 @@ if (data && data.processes && data.processes.length > 0) {
             <td>${p.name}</td>
             <td>${processList}</td>
             <td>
+            <div class="action-buttons">
                 <button onclick="openModal('${p._id}')">Add / Edit</button>
                 <button onclick="deleteProcesses('${p._id}')">Delete</button>
+                </div>
+                
             </td>
         </tr>
         `;

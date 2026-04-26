@@ -1,4 +1,4 @@
-const CACHE_NAME = "erp-v3";
+const CACHE_NAME = "erp-v5";
 
 const urlsToCache = [
   "/",

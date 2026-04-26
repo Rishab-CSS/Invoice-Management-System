@@ -4,6 +4,8 @@
 <head>
 <title>Admin Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -102,6 +104,14 @@
 </div>
 
 <script src="js/login.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(() => console.log("Service Worker Registered"))
+    .catch(err => console.log("SW failed:", err));
+}
+</script>
 
 </body>
 

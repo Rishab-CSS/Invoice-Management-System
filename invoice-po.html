@@ -3,6 +3,8 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
 <title>Invoice & Purchase Order</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -34,6 +36,14 @@ Invoice
 
 <script src="js/navbar.js"></script>
 <script src="js/auth.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(() => console.log("Service Worker Registered"))
+    .catch(err => console.log("SW failed:", err));
+}
+</script>
 
 </body>
 

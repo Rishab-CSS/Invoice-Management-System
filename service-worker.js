@@ -1,4 +1,4 @@
-const CACHE_NAME = "erp-v2";
+const CACHE_NAME = "erp-v3";
 
 const urlsToCache = [
   "/",
@@ -7,18 +7,35 @@ const urlsToCache = [
   "/js/navbar.js"
 ];
 
+// INSTALL
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
+  self.skipWaiting();
 });
 
+// ACTIVATE
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+// FETCH (network first, fallback to cache)
 self.addEventListener("fetch", event => {
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match("/") || caches.match("/index.html");
-    })
+    fetch(event.request)
+      .then(res => res)
+      .catch(() => caches.match(event.request).then(res => res || caches.match("/")))
   );
 });
